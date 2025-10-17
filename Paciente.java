@@ -50,12 +50,27 @@ public class Paciente {
         this.email = email;
     }
 
-    public static void main(String[] args) {
-        Paciente paciente1 = new Paciente();
-        paciente1.setId(1);
-        paciente1.setNombre("Leonel F");
-        paciente1.setTelefono("3334564092");
+    public String getPaciente() {
+        return "ID: " + id + " | Nombre: " + nombre + " | Teléfono: " + telefono + " | Email: " + email;
+    }
 
-        System.out.println("Paciente: " + paciente1.getNombre() + ", Telefono: " + paciente1.getTelefono());
+    public String getPaciente(int id) {
+        if (this.id == id) {
+            return getPaciente();
+        } else {
+            return "Paciente no encontrado con ID: " + id;
+        }
+    }
+
+    public String getPaciente(String telefono) {
+        if (this.telefono.equals(telefono)) {
+            return getPaciente();
+        } else {
+            return "Paciente no encontrado con teléfono: " + telefono;
+        }
     }
 }
+
+// get paciente (sobrecarga de métodos por id o por teléfono)
+// get paciente por default me pida el id o por parámetro con el id o por
+// teléfono
