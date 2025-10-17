@@ -1,14 +1,14 @@
-public class Citas {
-    private Paciente paciente;
-    private String fecha;
-    private String hora;
-    private String motivo;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 
-    public Citas(Paciente paciente, String fecha, String hora, String motivo) {
+class Cita {
+    private Paciente paciente;
+    private LocalDateTime fechaHora;
+    String motivo;
+
+    public Cita(Paciente paciente, LocalDateTime fechaHora) {
         this.paciente = paciente;
-        this.fecha = fecha;
-        this.hora = hora;
-        this.motivo = motivo;
+        this.fechaHora = fechaHora;
     }
 
     public Paciente getPaciente() {
@@ -19,36 +19,82 @@ public class Citas {
         this.paciente = paciente;
     }
 
-    public String getFecha() {
-        return fecha;
+    public LocalDateTime getFechaHora() {
+        return fechaHora;
     }
 
-    public void setFecha(String fecha) {
-        this.fecha = fecha;
-    }
-
-    public String getHora() {
-        return hora;
-    }
-
-    public void setHora(String hora) {
-        this.hora = hora;
+    public void setFechaHora(LocalDateTime fechaHora) {
+        this.fechaHora = fechaHora;
     }
 
     public String getMotivo() {
         return motivo;
     }
 
-    public void setMotivo(String motivo) {
-        this.motivo = motivo;
+    public boolean setMotivo(String motivo) {
+        return false;
     }
 
     public void mostrarCita() {
         System.out.println("Id del paciente: " + paciente.getId());
-        System.out.println("Cita para el paciente: " + paciente.getNombre());
+        System.out.println("Nombre paciente: " + paciente.getNombre());
         System.out.println("Telefono: " + paciente.getTelefono());
         System.out.println("Email: " + paciente.getEmail());
-        System.out.println("Fecha: " + fecha);
-        System.out.println("Hora: " + hora);
+        System.out.println("Fecha y Hora: " + this.getFechaHora());
     }
+}
+
+
+class CitaMatutina extends Cita {
+
+    private ArrayList<String> listaMotivos = new ArrayList<>();
+
+    public CitaMatutina(Paciente paciente, LocalDateTime fechaHora, String motivo) {
+        super(paciente, fechaHora);
+        listaMotivos.add("Consulta nutricional");
+        listaMotivos.add("Chequeo de glucosa");
+        listaMotivos.add("Pesaje mensual");
+        if (!this.setMotivo(motivo)) {
+            this.motivo = null;
+        }
+    }
+
+    @Override
+    public boolean setMotivo(String motivo) {
+        for (String m : listaMotivos) {
+            if (m.equals(motivo)) {
+                this.motivo = motivo;
+                return true;
+            }
+        }
+        return false;
+    }
+}
+
+
+class CitaVespertina extends Cita {
+
+    private ArrayList<String> listaMotivos = new ArrayList<>();
+
+    public CitaVespertina(Paciente paciente, LocalDateTime fechaHora, String motivo) {
+        super(paciente, fechaHora);
+        listaMotivos.add("Consulta general de psicologia");
+        listaMotivos.add("Crisis nerviosa");
+        listaMotivos.add("Cita infantil");
+        if (!this.setMotivo(motivo)) {
+            this.motivo = null;
+        }
+    }
+
+    @Override
+    public boolean setMotivo(String motivo) {
+        for (String m : listaMotivos) {
+            if (m.equals(motivo)) {
+                this.motivo = motivo;
+                return true;
+            }
+        }
+        return false;
+    }
+
 }
