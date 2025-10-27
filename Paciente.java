@@ -1,28 +1,33 @@
+//TODO Investigar que son los métodos estáticos (atributo estático)
+
 public class Paciente {
-    private int id;
+
+    private static int totalPacientes = 0;
+
+    private String id;
     private String nombre;
     private String telefono;
     private String email;
 
     public Paciente() {
-        this.id = 0;
+        this.id = "P" + String.format("%03d", ++totalPacientes);
         this.nombre = "";
         this.telefono = "";
         this.email = "";
     }
 
-    public Paciente(int id, String nombre, String telefono, String email) {
-        this.id = id;
+    public Paciente(String nombre, String telefono, String email) {
+        this.id = "P" + String.format("%03d", ++totalPacientes);
         this.nombre = nombre;
         this.telefono = telefono;
         this.email = email;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -54,15 +59,15 @@ public class Paciente {
         return "ID: " + id + " | Nombre: " + nombre + " | Teléfono: " + telefono + " | Email: " + email;
     }
 
-    public String getPaciente(int id) {
-        if (this.id == id) {
+    public String getPacientePorID(String id) {
+        if (this.id.equals(id)) {
             return getPaciente();
         } else {
             return "Paciente no encontrado con ID: " + id;
         }
     }
 
-    public String getPaciente(String telefono) {
+    public String getPacientePorTelefono(String telefono) {
         if (this.telefono.equals(telefono)) {
             return getPaciente();
         } else {

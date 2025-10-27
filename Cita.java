@@ -1,3 +1,5 @@
+//TODO Arreglar Date & Time
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
@@ -44,7 +46,6 @@ class Cita {
     }
 }
 
-
 class CitaMatutina extends Cita {
 
     private ArrayList<String> listaMotivos = new ArrayList<>();
@@ -70,7 +71,6 @@ class CitaMatutina extends Cita {
         return false;
     }
 }
-
 
 class CitaVespertina extends Cita {
 
