@@ -1,9 +1,9 @@
-//TODO Arreglar Date & Time
+package model;//TODO Arreglar Date & Time
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
-class Cita {
+abstract class Cita {
     private Paciente paciente;
     private LocalDateTime fechaHora;
     String motivo;

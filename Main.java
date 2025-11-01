@@ -1,12 +1,13 @@
-import java.time.LocalDateTime;
 import java.util.Scanner;
 
+import model.Agenda;
 import utils.Menu;
 import utils.SubMenus;
 
 public class Main {
     public static void main(String[] args) {
         Menu menu = new Menu();
+        Agenda agenda = new Agenda();
 
         Scanner sc = new Scanner(System.in);
         int opcion;

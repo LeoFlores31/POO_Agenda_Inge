@@ -1,4 +1,4 @@
-//TODO Investigar que son los métodos estáticos (atributo estático)
+package model;//TODO Investigar que son los métodos estáticos (atributo estático)
 
 public class Paciente {
 
