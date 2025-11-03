@@ -1,16 +1,30 @@
 package model;//TODO Arreglar Date & Time
 
+import utils.Menu;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 
 abstract class Cita {
+    private static int id = 0;
     private Paciente paciente;
     private LocalDateTime fechaHora;
-    String motivo;
+    private String motivo;
+    private int duracionMinutos;
+
+    protected ArrayList<String> listaMotivos = new ArrayList<>();
 
     public Cita(Paciente paciente, LocalDateTime fechaHora) {
+        id++;
         this.paciente = paciente;
         this.fechaHora = fechaHora;
+        this.duracionMinutos = 0;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public Paciente getPaciente() {
@@ -19,6 +33,14 @@ abstract class Cita {
 
     public void setPaciente(Paciente paciente) {
         this.paciente = paciente;
+    }
+
+    public LocalDate getFecha() {
+        return fechaHora.toLocalDate();
+    }
+
+    public LocalTime getHora() {
+        return fechaHora.toLocalTime();
     }
 
     public LocalDateTime getFechaHora() {
@@ -33,68 +55,66 @@ abstract class Cita {
         return motivo;
     }
 
-    public boolean setMotivo(String motivo) {
-        return false;
+    public void setMotivo(String motivo) {
+        this.motivo = motivo;
+    }
+
+    public void mostrarMotivosDisponibles() {
+        for (int i = 0; i < listaMotivos.size(); i++) {
+            System.out.println(i + 1 + ") " + listaMotivos.get(i));
+        }
+    }
+
+    public String getMotivoPorIndice(int i) {
+        try{
+            return listaMotivos.get(i);
+        } catch (IndexOutOfBoundsException e) {
+            Menu.mostrarMensajeError("Error: " + e.getMessage());
+            throw e;
+        }
+    }
+
+    public int getTotalMotivos() {
+        return listaMotivos.size();
     }
 
     public void mostrarCita() {
-        System.out.println("Id del paciente: " + paciente.getId());
-        System.out.println("Nombre paciente: " + paciente.getNombre());
-        System.out.println("Telefono: " + paciente.getTelefono());
-        System.out.println("Email: " + paciente.getEmail());
-        System.out.println("Fecha y Hora: " + this.getFechaHora());
+        System.out.println("-".repeat(40));
+        System.out.println("Fecha: " + this.getFecha());
+        System.out.println("De: " + this.getHora() + " a " + this.terminaEn().toLocalTime());
+        System.out.println("Paciente: " + paciente.getNombre());
+        System.out.println("Motivo: " + this.getMotivo());
+        System.out.println("-".repeat(40));
+
+    }
+
+    public int getDuracionMinutos() {
+        return duracionMinutos;
+    }
+
+    public void setDuracionMinutos(int duracionMinutos) {
+        this.duracionMinutos = duracionMinutos;
+    }
+
+    public LocalDateTime terminaEn() {
+        return this.fechaHora.plusMinutes(this.duracionMinutos);
     }
 }
 
 class CitaMatutina extends Cita {
-
-    private ArrayList<String> listaMotivos = new ArrayList<>();
-
-    public CitaMatutina(Paciente paciente, LocalDateTime fechaHora, String motivo) {
+    public CitaMatutina(Paciente paciente, LocalDateTime fechaHora) {
         super(paciente, fechaHora);
         listaMotivos.add("Consulta nutricional");
         listaMotivos.add("Chequeo de glucosa");
         listaMotivos.add("Pesaje mensual");
-        if (!this.setMotivo(motivo)) {
-            this.motivo = null;
-        }
-    }
-
-    @Override
-    public boolean setMotivo(String motivo) {
-        for (String m : listaMotivos) {
-            if (m.equals(motivo)) {
-                this.motivo = motivo;
-                return true;
-            }
-        }
-        return false;
     }
 }
 
 class CitaVespertina extends Cita {
-
-    private ArrayList<String> listaMotivos = new ArrayList<>();
-
-    public CitaVespertina(Paciente paciente, LocalDateTime fechaHora, String motivo) {
+    public CitaVespertina(Paciente paciente, LocalDateTime fechaHora) {
         super(paciente, fechaHora);
         listaMotivos.add("Consulta general de psicologia");
         listaMotivos.add("Crisis nerviosa");
         listaMotivos.add("Cita infantil");
-        if (!this.setMotivo(motivo)) {
-            this.motivo = null;
-        }
     }
-
-    @Override
-    public boolean setMotivo(String motivo) {
-        for (String m : listaMotivos) {
-            if (m.equals(motivo)) {
-                this.motivo = motivo;
-                return true;
-            }
-        }
-        return false;
-    }
-
 }
