@@ -1,5 +1,7 @@
 package utils;
 
+import model.Agenda;
+
 import java.util.Scanner;
 
 public class SubMenus {
@@ -45,15 +47,18 @@ public class SubMenus {
     }
 
     // Submenú de Citas
-    public static void ejecutarMenuAgenda(Scanner sc) {
+    public static void ejecutarMenuAgenda(Scanner sc, Agenda agenda) {
         int opcion;
         do {
             mostrarMenuAgenda();
             opcion = sc.nextInt();
 
             switch (opcion) {
+                // TODO: Implementar los metodos en la clase agenda y llamarlos aqui
                 case 1:
-                    System.out.println("Crear una cita");
+                    if (agenda.agendarCita()) {
+                        System.out.println("\nCita agregada con exito");
+                    }
                     break;
                 case 2:
                     System.out.println("Modificar una cita");
@@ -62,10 +67,10 @@ public class SubMenus {
                     System.out.println("Cancelar una cita");
                     break;
                 case 4:
-                    System.out.println("Mostrar citas por paciente");
+                    agenda.mostrarCitasPorPaciente();
                     break;
                 case 5:
-                    System.out.println("Mostrar lista de citas");
+                    agenda.mostrarCitas();
                     break;
                 case 6:
                     System.out.println("Regresando al menú principal...");
