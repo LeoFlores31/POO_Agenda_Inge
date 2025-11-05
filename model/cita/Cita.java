@@ -1,5 +1,6 @@
-package model;//TODO Arreglar Date & Time
+package model.cita;//TODO Arreglar Date & Time
 
+import model.Paciente;
 import utils.Menu;
 
 import java.time.LocalDate;
@@ -7,8 +8,9 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 
-abstract class Cita {
-    private static int id = 0;
+public abstract class Cita {
+    private static int totalCitas = 0;
+    private int id;
     private Paciente paciente;
     private LocalDateTime fechaHora;
     private String motivo;
@@ -17,7 +19,7 @@ abstract class Cita {
     protected ArrayList<String> listaMotivos = new ArrayList<>();
 
     public Cita(Paciente paciente, LocalDateTime fechaHora) {
-        id++;
+        this.id = ++totalCitas;
         this.paciente = paciente;
         this.fechaHora = fechaHora;
         this.duracionMinutos = 0;
@@ -80,6 +82,7 @@ abstract class Cita {
 
     public void mostrarCita() {
         System.out.println("-".repeat(40));
+        System.out.println("ID Cita: " + this.getId());
         System.out.println("Fecha: " + this.getFecha());
         System.out.println("De: " + this.getHora() + " a " + this.terminaEn().toLocalTime());
         System.out.println("Paciente: " + paciente.getNombre());
@@ -98,23 +101,5 @@ abstract class Cita {
 
     public LocalDateTime terminaEn() {
         return this.fechaHora.plusMinutes(this.duracionMinutos);
-    }
-}
-
-class CitaMatutina extends Cita {
-    public CitaMatutina(Paciente paciente, LocalDateTime fechaHora) {
-        super(paciente, fechaHora);
-        listaMotivos.add("Consulta nutricional");
-        listaMotivos.add("Chequeo de glucosa");
-        listaMotivos.add("Pesaje mensual");
-    }
-}
-
-class CitaVespertina extends Cita {
-    public CitaVespertina(Paciente paciente, LocalDateTime fechaHora) {
-        super(paciente, fechaHora);
-        listaMotivos.add("Consulta general de psicologia");
-        listaMotivos.add("Crisis nerviosa");
-        listaMotivos.add("Cita infantil");
     }
 }
