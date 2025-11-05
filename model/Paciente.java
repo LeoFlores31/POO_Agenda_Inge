@@ -1,8 +1,8 @@
-//TODO Investigar que son los métodos estáticos (atributo estático)
+package model;
 
 public class Paciente {
 
-    private static int totalPacientes = 0;
+    private static int totalPaciente = 0;
 
     private String id;
     private String nombre;
@@ -10,14 +10,15 @@ public class Paciente {
     private String email;
 
     public Paciente() {
-        this.id = "P" + String.format("%03d", ++totalPacientes);
         this.nombre = "";
         this.telefono = "";
         this.email = "";
+        this.id = "P" + String.format("%03d", ++totalPaciente);
+
     }
 
     public Paciente(String nombre, String telefono, String email) {
-        this.id = "P" + String.format("%03d", ++totalPacientes);
+        this.id = "P" + String.format("%03d", ++totalPaciente);
         this.nombre = nombre;
         this.telefono = telefono;
         this.email = email;
@@ -75,7 +76,3 @@ public class Paciente {
         }
     }
 }
-
-// get paciente (sobrecarga de métodos por id o por teléfono)
-// get paciente por default me pida el id o por parámetro con el id o por
-// teléfono
