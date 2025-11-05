@@ -74,6 +74,16 @@ public class Paciente {
             return "Paciente no encontrado con teléfono: " + telefono;
         }
     }
+
+    @Override
+    public String toString() {
+        return "Paciente{" +
+                "id='" + id + '\'' +
+                ", nombre='" + nombre + '\'' +
+                ", telefono='" + telefono + '\'' +
+                ", email='" + email + '\'' +
+                '}';
+    }
 }
 
 // get paciente (sobrecarga de métodos por id o por teléfono)

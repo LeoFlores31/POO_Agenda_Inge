@@ -1,6 +1,7 @@
 package utils;
 
 import model.Agenda;
+import model.cita.Cita;
 
 import java.util.Scanner;
 
@@ -47,41 +48,6 @@ public class SubMenus {
     }
 
     // Submenú de Citas
-    public static void ejecutarMenuAgenda(Scanner sc, Agenda agenda) {
-        int opcion;
-        do {
-            mostrarMenuAgenda();
-            opcion = sc.nextInt();
-
-            switch (opcion) {
-                // TODO: Implementar los metodos en la clase agenda y llamarlos aqui
-                case 1:
-                    if (agenda.agendarCita()) {
-                        System.out.println("\nCita agregada con exito");
-                    }
-                    break;
-                case 2:
-                    System.out.println("Modificar una cita");
-                    break;
-                case 3:
-                    System.out.println("Cancelar una cita");
-                    break;
-                case 4:
-                    agenda.mostrarCitasPorPaciente();
-                    break;
-                case 5:
-                    agenda.mostrarCitas();
-                    break;
-                case 6:
-                    System.out.println("Regresando al menú principal...");
-                    break;
-                default:
-                    System.out.println("Opción no válida, intenta de nuevo.");
-            }
-
-        } while (opcion != 6);
-    }
-
     public static void mostrarMenuAgenda() {
         System.out.println("\n--- Menú Citas ---");
         System.out.println("1. Crear una cita");
@@ -92,4 +58,71 @@ public class SubMenus {
         System.out.println("6. Regresar al menú anterior");
         System.out.print("\n\tOpcion: ");
     }
+
+    public static void ejecutarMenuAgenda(Scanner sc, Agenda agenda) {
+        int opcion;
+        String inputUsuario;
+        do {
+            mostrarMenuAgenda();
+            opcion = sc.nextInt();
+
+
+            switch (opcion) {
+                // TODO: Implementar los metodos en la clase agenda y llamarlos aqui
+                case 1:
+                    if (agenda.agendarCita()) {
+                        System.out.println("\nCita agregada con exito");
+                    }
+                    break;
+
+                case 2:
+                    System.out.println("Modificar una cita");
+                    break;
+
+                case 3:
+                    // TODO: Revisar porque no funciona el Scanner.
+                    boolean citaCancelada = false;
+                    do {
+                        System.out.print("Ingresa el ID de la cita a cancelar o presiona '0' para buscar la cita: ");
+                        inputUsuario = sc.nextLine();
+                        if (inputUsuario.equals("0")) {
+                            agenda.buscarCita();
+                            continue;
+                        }
+                        try {
+                            int id = Integer.parseInt(inputUsuario);
+                            citaCancelada = agenda.cancelarCita(id);
+                        } catch ( NumberFormatException e) {
+                            System.err.println("ID en formato invalido: " + e.getMessage());
+                        }
+
+                        if (citaCancelada) {
+                            System.out.println("\n✅ Cita cancelada con exito!");
+                            break;
+                        } else {
+                            Menu.mostrarMensajeError("\n❌ No se encontro la cita. Intenta de nuevo.");
+                        }
+                    } while (true);
+
+                    break;
+
+                case 4:
+                    agenda.mostrarCitasPorPaciente();
+                    break;
+
+                case 5:
+                    agenda.mostrarCitas();
+                    break;
+
+                case 6:
+                    System.out.println("Regresando al menú principal...");
+                    break;
+
+                default:
+                    System.out.println("Opción no válida, intenta de nuevo.");
+            }
+
+        } while (opcion != 6);
+    }
+
 }
