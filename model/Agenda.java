@@ -17,7 +17,7 @@ public class Agenda {
         CRUD:
         agendarCita()                   ok!
         modificarCita()
-        cancelarCita() / cancelar
+        cancelarCita() / cancelar       ok!
         mostrarCitasPorPaciente()       ok!
         mostrarCitas()                  ok!
         --
@@ -33,7 +33,6 @@ public class Agenda {
     }
 
     public void buscarCita() {
-        // TODO: Revisar porque no funciona el Scanner.
         Scanner sc = new Scanner(System.in);
         Menu.mostrarMensaje("\tBUSCAR CITA 👨🏽‍💻", 25);
 
@@ -49,6 +48,7 @@ public class Agenda {
             System.out.println("3) Email");
             System.out.print("\tOpcion: ");
             opcion = sc.nextInt();
+            sc.nextLine(); // limpiar el buffer
 
             switch (opcion) {
                 case 1:

@@ -65,7 +65,7 @@ public class SubMenus {
         do {
             mostrarMenuAgenda();
             opcion = sc.nextInt();
-
+            sc.nextLine(); // limpiar el buffer
 
             switch (opcion) {
                 // TODO: Implementar los metodos en la clase agenda y llamarlos aqui
@@ -80,7 +80,6 @@ public class SubMenus {
                     break;
 
                 case 3:
-                    // TODO: Revisar porque no funciona el Scanner.
                     boolean citaCancelada = false;
                     do {
                         System.out.print("Ingresa el ID de la cita a cancelar o presiona '0' para buscar la cita: ");
