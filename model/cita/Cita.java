@@ -53,6 +53,10 @@ public abstract class Cita {
         this.fechaHora = fechaHora;
     }
 
+    public void setFecha(LocalDate fecha){
+        this.fechaHora = LocalDateTime.of(fecha, this.getHora());
+    }
+
     public String getMotivo() {
         return motivo;
     }
