@@ -3,11 +3,101 @@ package utils;
 import model.Agenda;
 import model.cita.Cita;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class ControladorCitas {
+
+    public static void manejarModicarCita(Scanner sc, Agenda agenda) {
+        String inputUsuario;
+        do {
+            System.out.print("\nIngresa el ID de la cita a modificar. Presiona '0' para buscar la cita o '-1' para regresar: ");
+            inputUsuario = sc.nextLine();
+            if (inputUsuario.equals("-1")) {
+                break;
+            }
+            if (inputUsuario.equals("0")) {
+                manejarBusquedaCitas(sc, agenda);
+                continue;
+            }
+
+            int idCita;
+            try {
+                idCita = Integer.parseInt(inputUsuario);
+            } catch ( NumberFormatException e) {
+                System.err.println("ID en formato invalido: " + e.getMessage());
+                continue;
+            }
+
+            Cita citaAModificar = agenda.getCitaPorId(idCita);
+            if (citaAModificar == null) {
+                Menu.mostrarMensajeError("❌ No se encontro la cita. Intenta de nuevo.");
+                continue;
+            }
+
+
+            // todo: crear otro bucle hasta que el usuario desee salir
+            System.out.println("\nℹ️ Cita seleccionada:");
+            citaAModificar.mostrarCita();
+
+            System.out.println("\nℹ️ Que quieres modificar?");
+            System.out.println("1) Fecha");
+            System.out.println("2) Hora");
+            System.out.println("3) Nombre del paciente");
+            System.out.println("4) Motivo");
+            System.out.println("5) Regresar al menu anterior");
+            System.out.print("Opcion: ");
+            int opcion;
+            try {
+                opcion = sc.nextInt();
+                sc.nextLine(); // limpiar el buffer
+            } catch (InputMismatchException e) {
+                Menu.mostrarMensajeError("❌ Opcion Incorrecta. Intenta de nuevo.");
+                sc.nextLine(); // limpiar el buffer
+                continue;
+            }
+
+            switch (opcion) {
+                case 1:
+                    System.out.println("\nFecha actual: " + citaAModificar.getFecha());
+                    LocalDate nuevaFecha = preguntarFecha(sc);
+                    citaAModificar.setFecha(nuevaFecha);
+                    System.out.println("\n✅ Fecha modificada con exito!");
+                    break;
+                // todo: implementar el resto de opciones
+                case 2:
+                    System.out.println("\nHora actual: " + citaAModificar.getHora());
+                    break;
+                case 3:
+                    System.out.println("\nNombre actual: " + citaAModificar.getPaciente().getNombre());
+                    break;
+                case 4:
+                    System.out.println("\nMotivo actual: " + citaAModificar.getMotivo());
+                    break;
+                case 5:
+                    break;
+                default:
+                    Menu.mostrarMensajeError("❌ Opcion Incorrecta. Intenta de nuevo.");
+            }
+
+        } while (true);
+    }
+
+    private static LocalDate preguntarFecha(Scanner sc) {
+        DateTimeFormatter formatoFecha = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        do {
+            try {
+                System.out.print("Nueva Fecha (dd/MM/yyyy): ");
+                String fechaInput = sc.nextLine();
+                return LocalDate.parse(fechaInput, formatoFecha);
+            } catch (Exception e) {
+                System.out.println("❌ Error: formato incorrecto. Ejemplo correcto -> Fecha: 05/10/2025");
+            }
+        } while (true);
+    }
 
     public static void manejarMostrarCitas(Agenda agenda) {
         ArrayList<Cita> resultadoCitas = agenda.getCitas();
