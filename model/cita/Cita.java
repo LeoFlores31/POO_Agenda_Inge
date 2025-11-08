@@ -88,7 +88,6 @@ public abstract class Cita {
         System.out.println("Paciente: " + paciente.getNombre());
         System.out.println("Motivo: " + this.getMotivo());
         System.out.println("-".repeat(40));
-
     }
 
     public int getDuracionMinutos() {

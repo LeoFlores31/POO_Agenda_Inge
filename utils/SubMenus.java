@@ -54,63 +54,41 @@ public class SubMenus {
         System.out.println("2. Modificar una cita");
         System.out.println("3. Cancelar una cita");
         System.out.println("4. Mostrar citas por paciente");
-        System.out.println("5. Mostrar lista de citas");
+        System.out.println("5. Mostrar todas las citas");
         System.out.println("6. Regresar al menú anterior");
         System.out.print("\n\tOpcion: ");
     }
 
     public static void ejecutarMenuAgenda(Scanner sc, Agenda agenda) {
         int opcion;
-        String inputUsuario;
         do {
             mostrarMenuAgenda();
             opcion = sc.nextInt();
             sc.nextLine(); // limpiar el buffer
 
             switch (opcion) {
-                // TODO: Implementar los metodos en la clase agenda y llamarlos aqui
                 case 1:
+                    // todo: crear metodo en la clase controlador
                     if (agenda.agendarCita()) {
-                        System.out.println("\nCita agregada con exito");
+                        System.out.println("\nCita agregada con exito ✅");
                     }
                     break;
 
                 case 2:
+                    // todo: implementar metodo
                     System.out.println("Modificar una cita");
                     break;
 
                 case 3:
-                    boolean citaCancelada = false;
-                    do {
-                        System.out.print("Ingresa el ID de la cita a cancelar o presiona '0' para buscar la cita: ");
-                        inputUsuario = sc.nextLine();
-                        if (inputUsuario.equals("0")) {
-                            agenda.buscarCita();
-                            continue;
-                        }
-                        try {
-                            int id = Integer.parseInt(inputUsuario);
-                            citaCancelada = agenda.cancelarCita(id);
-                        } catch ( NumberFormatException e) {
-                            System.err.println("ID en formato invalido: " + e.getMessage());
-                        }
-
-                        if (citaCancelada) {
-                            System.out.println("\n✅ Cita cancelada con exito!");
-                            break;
-                        } else {
-                            Menu.mostrarMensajeError("\n❌ No se encontro la cita. Intenta de nuevo.");
-                        }
-                    } while (true);
-
+                    ControladorCitas.manejarCancelacionCita(sc, agenda);
                     break;
 
                 case 4:
-                    agenda.mostrarCitasPorPaciente();
+                    ControladorCitas.manejarBusquedaCitas(sc, agenda);
                     break;
 
                 case 5:
-                    agenda.mostrarCitas();
+                    ControladorCitas.manejarMostrarCitas(agenda);
                     break;
 
                 case 6:
