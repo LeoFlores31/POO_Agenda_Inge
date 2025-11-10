@@ -123,7 +123,7 @@ public class Agenda {
         LocalDateTime fechaHora = preguntarFechaYHora(sc);
         if (fechaHora == null) return false;
 
-        LocalTime horaCambioTurno = LocalTime.of(14, 0);
+        LocalTime horaCambioTurno = LocalTime.of(12, 0);
         if (fechaHora.toLocalTime().isBefore(horaCambioTurno)) {
             citaMatutina = true;
         } else {
@@ -202,6 +202,15 @@ public class Agenda {
                 System.out.println("❌ Error: formato incorrecto. Ejemplo correcto -> Fecha: 05/10/2025, Hora: 14:30");
             }
         } while (true);
+    }
+
+    public boolean reemplazarCita(Cita antigua, Cita nueva) {
+        int indice = this.citas.indexOf(antigua);
+        if (indice >= 0) {
+            this.citas.set(indice, nueva);
+            return true;
+        }
+        return false;
     }
 
 }
