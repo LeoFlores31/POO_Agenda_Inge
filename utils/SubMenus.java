@@ -75,8 +75,7 @@ public class SubMenus {
                     break;
 
                 case 2:
-                    // todo: implementar metodo
-                    System.out.println("Modificar una cita");
+                    ControladorCitas.manejarModicarCita(sc, agenda);
                     break;
 
                 case 3:
