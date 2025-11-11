@@ -64,40 +64,16 @@ public class ControladorCitas {
 
                 switch (opcion) {
                     case 1:
-                        System.out.println("\nFecha actual: " + citaAModificar.getFecha());
-                        LocalDate nuevaFecha = preguntarFecha(sc);
-                        citaAModificar.setFecha(nuevaFecha);
-                        System.out.println("\n✅ Fecha modificada con exito!");
+                        modificarFecha(sc, citaAModificar);
                         break;
                     case 2:
-                        String tipoCita = citaAModificar.getTipoCita();
-                        System.out.println("\nHora actual: " + citaAModificar.getHora());
-                        LocalTime nuevaHora = preguntarHora(sc);
-                        citaAModificar.setHora(nuevaHora);
-                        System.out.println("\n✅ Hora modificada con exito!");
-                        if (!tipoCita.equals(citaAModificar.getTipoCita())){
-                            Cita nuevaCita = cambiarInstanciaCita(citaAModificar, agenda);
-                            if (nuevaCita != null) {
-                                citaAModificar = agenda.getCitaPorId(nuevaCita.getId());
-                                System.out.println("\nℹ️ Tu tipo de cita cambio, favor de seleccionar un nuevo motivo.");
-                                // todo: crear metodos especificos para cada modificacion
-                                String nuevoMotivo = preguntarMotivo(sc, citaAModificar);
-                                citaAModificar.setMotivo(nuevoMotivo);
-                                System.out.println("\n✅ Motivo de cita modificado con exito!");
-                            }
-                        }
+                        citaAModificar = modificarHora(sc, citaAModificar, agenda);
                         break;
                     case 3:
-                        System.out.println("\nNombre actual: " + citaAModificar.getPaciente().getNombre());
-                        String nuevoNombre = preguntarNombre(sc);
-                        citaAModificar.getPaciente().setNombre(nuevoNombre);
-                        System.out.println("\n✅ Nombre modificado con exito!");
+                        modificarNombre(sc, citaAModificar);
                         break;
                     case 4:
-                        System.out.println("\nMotivo actual: " + citaAModificar.getMotivo());
-                        String nuevoMotivo = preguntarMotivo(sc, citaAModificar);
-                        citaAModificar.setMotivo(nuevoMotivo);
-                        System.out.println("\n✅ Motivo de cita modificado con exito!");
+                        modificarMotivo(sc, citaAModificar);
                         break;
                     case 5:
                         break;
@@ -107,6 +83,44 @@ public class ControladorCitas {
             } while (opcion != 5);
 
         } while (true);
+    }
+
+    private static void modificarFecha(Scanner sc, Cita citaAModificar) {
+        System.out.println("\nFecha actual: " + citaAModificar.getFecha());
+        LocalDate nuevaFecha = preguntarFecha(sc);
+        citaAModificar.setFecha(nuevaFecha);
+        System.out.println("\n✅ Fecha modificada con exito!");
+    }
+
+    private static Cita modificarHora(Scanner sc, Cita citaAModificar, Agenda agenda) {
+        String tipoCita = citaAModificar.getTipoCita();
+        System.out.println("\nHora actual: " + citaAModificar.getHora());
+        LocalTime nuevaHora = preguntarHora(sc);
+        citaAModificar.setHora(nuevaHora);
+        System.out.println("\n✅ Hora modificada con exito!");
+        if (!tipoCita.equals(citaAModificar.getTipoCita())){
+            Cita nuevaCita = cambiarInstanciaCita(citaAModificar, agenda);
+            if (nuevaCita != null) {
+                citaAModificar = agenda.getCitaPorId(nuevaCita.getId());
+                System.out.println("\nℹ️ Tu tipo de cita cambio, favor de seleccionar un nuevo motivo.");
+                modificarMotivo(sc, citaAModificar);
+            }
+        }
+        return citaAModificar;
+    }
+
+    private static void modificarNombre(Scanner sc, Cita citaAModificar) {
+        System.out.println("\nNombre actual: " + citaAModificar.getPaciente().getNombre());
+        String nuevoNombre = preguntarNombre(sc);
+        citaAModificar.getPaciente().setNombre(nuevoNombre);
+        System.out.println("\n✅ Nombre modificado con exito!");
+    }
+
+    private static void modificarMotivo(Scanner sc, Cita citaAModificar) {
+        System.out.println("\nMotivo actual: " + citaAModificar.getMotivo());
+        String nuevoMotivo = preguntarMotivo(sc, citaAModificar);
+        citaAModificar.setMotivo(nuevoMotivo);
+        System.out.println("\n✅ Motivo de cita modificado con exito!");
     }
 
     private static Cita cambiarInstanciaCita (Cita citaAModificar, Agenda agenda){
@@ -125,8 +139,10 @@ public class ControladorCitas {
 
         if (nuevaCita != null) {
             if (!agenda.reemplazarCita(citaAModificar, nuevaCita)) {
-                Menu.mostrarMensajeError("❌ Error al cambiar la instnacia de la cita.");
+                Menu.mostrarMensajeError("❌ Error al cambiar la instancia de la cita.");
                 return null;
+            } else {
+                nuevaCita.setId(citaAModificar.getId());
             }
         }
         return nuevaCita;
