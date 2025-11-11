@@ -30,6 +30,10 @@ public abstract class Cita {
         return this.fechaHora.getHour() < 12 ? "MATUTINA" : "VESPERTINA";
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public int getId() {
         return id;
     }
