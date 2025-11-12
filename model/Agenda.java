@@ -32,71 +32,34 @@ public class Agenda {
         this.gestorPacientes = gestorPacientes;
     }
 
-    public void buscarCita() {
-        Scanner sc = new Scanner(System.in);
-        Menu.mostrarMensaje("\tBUSCAR CITA 👨🏽‍💻", 25);
-
-        int opcion;
-        String inputUsuario;
-        boolean citaEncontrada;
-
-        do {
-            citaEncontrada = false;
-            System.out.println("\n\tBuscar cita por:");
-            System.out.println("1) Nombre");
-            System.out.println("2) Telefono");
-            System.out.println("3) Email");
-            System.out.print("\tOpcion: ");
-            opcion = sc.nextInt();
-            sc.nextLine(); // limpiar el buffer
-
-            switch (opcion) {
-                case 1:
-                    System.out.print("\nNombre: ");
-                    inputUsuario = sc.nextLine();
-                    for (Cita c : citas) {
-                        if (c.getPaciente().getNombre().equalsIgnoreCase(inputUsuario)) {
-                            c.mostrarCita();
-                            citaEncontrada = true;
-                        }
-                    }
-                    if (!citaEncontrada) {
-                        Menu.mostrarMensajeError("No se encontraron citas para '" + inputUsuario + "'. Intenta de nuevo.");
-                    }
-                    break;
-
-                case 2:
-                    System.out.print("\nTelefono: ");
-                    inputUsuario = sc.nextLine();
-                    for (Cita c : citas) {
-                        if (c.getPaciente().getTelefono().equalsIgnoreCase(inputUsuario)) {
-                            c.mostrarCita();
-                            citaEncontrada = true;
-                        }
-                    }
-                    if (!citaEncontrada) {
-                        Menu.mostrarMensajeError("No se encontraron citas con el telefono '" + inputUsuario + "'. Intenta de nuevo.");
-                    }
-                    break;
-
-                case 3:
-                    System.out.print("\nEmail: ");
-                    inputUsuario = sc.nextLine();
-                    for (Cita c : citas) {
-                        if (c.getPaciente().getEmail().equalsIgnoreCase(inputUsuario)) {
-                            c.mostrarCita();
-                            citaEncontrada = true;
-                        }
-                    }
-                    if (!citaEncontrada) {
-                        Menu.mostrarMensajeError("No se encontraron citas para '" + inputUsuario + "'. Intenta de nuevo.");
-                    }
-                    break;
-
-                default:
-                    Menu.mostrarMensajeError("Opcion Incorrecta. Intenta de nuevo.");
+    public ArrayList<Cita> buscarCitaPorNombre(String nombre) {
+        ArrayList<Cita> citasEncontradas = new ArrayList<>();
+        for (Cita c : citas) {
+            if (c.getPaciente().getNombre().equalsIgnoreCase(nombre)) {
+                citasEncontradas.add(c);
             }
-        } while (!citaEncontrada);
+        }
+        return citasEncontradas;
+    }
+
+    public ArrayList<Cita> buscarCitaPorTelefono(String telefono) {
+        ArrayList<Cita> citasEncontradas = new ArrayList<>();
+        for (Cita c : citas) {
+            if (c.getPaciente().getTelefono().equals(telefono)) {
+                citasEncontradas.add(c);
+            }
+        }
+        return citasEncontradas;
+    }
+
+    public ArrayList<Cita> buscarCitaPorEmail(String email) {
+        ArrayList<Cita> citasEncontradas = new ArrayList<>();
+        for (Cita c : citas) {
+            if (c.getPaciente().getEmail().equalsIgnoreCase(email)) {
+                citasEncontradas.add(c);
+            }
+        }
+        return citasEncontradas;
     }
 
     public boolean cancelarCita(int id) {
@@ -108,67 +71,25 @@ public class Agenda {
         return false;
     }
 
-    public void mostrarCitas() {
-        if (citas.isEmpty()) {
-            Menu.mostrarMensajeError("⚠️ Aun no hay citas registradas.");
-            return;
-        }
-
-        Menu.mostrarMensaje("\tCITAS MEDICAS 🩺", 25);
-
-        for (Cita c : citas) {
-            c.mostrarCita();
-        }
+    public ArrayList<Cita> getCitas() {
+        return citas;
     }
 
-    public void mostrarCitasPorPaciente() {
-        if (citas.isEmpty()) {
-            Menu.mostrarMensajeError("⚠️ Aun no hay citas registradas.");
-            return;
-        }
-
-        Menu.mostrarMensaje("\tCITAS POR PACIENTE‍️ 👨🏻‍", 30);
-
-        Scanner sc = new Scanner(System.in);
-        boolean pacienteEncontrado = false;
-
-        Paciente paciente = null;
-        do {
-            String id;
-            System.out.print("\nID del Paciente (0 para buscar paciente): ");
-            id = sc.nextLine();
-
-            if (id.equals("*")) return;
-            if (id.equals("0")) {
-                gestorPacientes.mostrarPacientes(); // TODO: Implementacion pendiente (preguntar si quiere buscarlo por nombre, etc
-                continue;
-            }
-
-            paciente = gestorPacientes.buscarPacientePorID(id);
-            if (paciente == null) {
-                Menu.mostrarMensajeError("❌ No se encontro el paciente. Intenta de nuevo.");
-            } else {
-                break;
-            }
-        } while (true);
-
-
+    public Cita getCitaPorId(int id) {
+        Cita cita = null;
         for (Cita c : citas) {
-            if (Objects.equals(c.getPaciente().getId(), paciente.getId())) {
-                c.mostrarCita();
-                pacienteEncontrado = true;
+            if (c.getId() == id) {
+                cita = c;
             }
         }
-
-        if (!pacienteEncontrado) {
-            Menu.mostrarMensajeError("⚠️ No se encontraron citas para " + paciente.getNombre());
-        }
+        return cita;
     }
 
     public void agendarCita(Cita cita) {
         citas.add(cita);
     }
 
+    // TODO: refactorizar y remover mensajes de consola
     public boolean agendarCita() {
         Scanner sc = new Scanner(System.in);
         boolean citaMatutina = false;
@@ -202,7 +123,7 @@ public class Agenda {
         LocalDateTime fechaHora = preguntarFechaYHora(sc);
         if (fechaHora == null) return false;
 
-        LocalTime horaCambioTurno = LocalTime.of(14, 0);
+        LocalTime horaCambioTurno = LocalTime.of(12, 0);
         if (fechaHora.toLocalTime().isBefore(horaCambioTurno)) {
             citaMatutina = true;
         } else {
@@ -260,6 +181,7 @@ public class Agenda {
         return citaAceptada;
     }
 
+    // TODO: refactorizar y remover mensajes de consola
     private LocalDateTime preguntarFechaYHora(Scanner sc) {
         DateTimeFormatter formatoFecha = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         DateTimeFormatter formatoHora = DateTimeFormatter.ofPattern("HH:mm");
@@ -280,6 +202,15 @@ public class Agenda {
                 System.out.println("❌ Error: formato incorrecto. Ejemplo correcto -> Fecha: 05/10/2025, Hora: 14:30");
             }
         } while (true);
+    }
+
+    public boolean reemplazarCita(Cita antigua, Cita nueva) {
+        int indice = this.citas.indexOf(antigua);
+        if (indice >= 0) {
+            this.citas.set(indice, nueva);
+            return true;
+        }
+        return false;
     }
 
 }

@@ -71,29 +71,28 @@ public class SubMenus {
         System.out.println("2. Modificar una cita");
         System.out.println("3. Cancelar una cita");
         System.out.println("4. Mostrar citas por paciente");
-        System.out.println("5. Mostrar lista de citas");
+        System.out.println("5. Mostrar todas las citas");
         System.out.println("6. Regresar al menú anterior");
         System.out.print("\n\tOpcion: ");
     }
 
     public static void ejecutarMenuAgenda(Scanner sc, Agenda agenda) {
         int opcion;
-        String inputUsuario;
         do {
             mostrarMenuAgenda();
             opcion = sc.nextInt();
             sc.nextLine(); // limpiar el buffer
 
             switch (opcion) {
-                // TODO: Implementar los metodos en la clase agenda y llamarlos aqui
                 case 1:
+                    // todo: crear metodo en la clase controlador
                     if (agenda.agendarCita()) {
-                        System.out.println("\nCita agregada con exito");
+                        System.out.println("\nCita agregada con exito ✅");
                     }
                     break;
 
                 case 2:
-                    System.out.println("Modificar una cita");
+                    ControladorCitas.manejarModicarCita(sc, agenda);
                     break;
 
                 case 3:
@@ -120,14 +119,15 @@ public class SubMenus {
                         }
                     } while (true);
 
+                    ControladorCitas.manejarCancelacionCita(sc, agenda);
                     break;
 
                 case 4:
-                    agenda.mostrarCitasPorPaciente();
+                    ControladorCitas.manejarBusquedaCitas(sc, agenda);
                     break;
 
                 case 5:
-                    agenda.mostrarCitas();
+                    ControladorCitas.manejarMostrarCitas(agenda);
                     break;
 
                 case 6:

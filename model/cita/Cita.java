@@ -1,4 +1,4 @@
-package model.cita;//TODO Arreglar Date & Time
+package model.cita;
 
 import model.Paciente;
 import utils.Menu;
@@ -16,6 +16,7 @@ public abstract class Cita {
     private String motivo;
     private int duracionMinutos;
 
+    // todo: crear un HashMap<String, int> para almacenar el motivo y su duracion
     protected ArrayList<String> listaMotivos = new ArrayList<>();
 
     public Cita(Paciente paciente, LocalDateTime fechaHora) {
@@ -23,6 +24,14 @@ public abstract class Cita {
         this.paciente = paciente;
         this.fechaHora = fechaHora;
         this.duracionMinutos = 0;
+    }
+
+    public String getTipoCita() {
+        return this.fechaHora.getHour() < 12 ? "MATUTINA" : "VESPERTINA";
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getId() {
@@ -51,6 +60,14 @@ public abstract class Cita {
 
     public void setFechaHora(LocalDateTime fechaHora) {
         this.fechaHora = fechaHora;
+    }
+
+    public void setFecha(LocalDate fecha){
+        this.fechaHora = LocalDateTime.of(fecha, this.getHora());
+    }
+
+    public void setHora(LocalTime hora){
+        this.fechaHora = LocalDateTime.of(this.getFecha(), hora);
     }
 
     public String getMotivo() {
@@ -88,7 +105,6 @@ public abstract class Cita {
         System.out.println("Paciente: " + paciente.getNombre());
         System.out.println("Motivo: " + this.getMotivo());
         System.out.println("-".repeat(40));
-
     }
 
     public int getDuracionMinutos() {
