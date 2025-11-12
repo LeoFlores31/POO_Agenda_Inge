@@ -56,13 +56,14 @@ public class Paciente {
         this.email = email;
     }
 
-    public String getPaciente() {
-        return "ID: " + id + " | Nombre: " + nombre + " | Teléfono: " + telefono + " | Email: " + email;
+    @Override
+    public String toString() {
+        return "ID: " + id + " | Nombre: " + nombre + " |  Telefono: " + telefono + "| Email: " + email;
     }
 
     public String getPacientePorID(String id) {
         if (this.id.equals(id)) {
-            return getPaciente();
+            return toString();
         } else {
             return "Paciente no encontrado con ID: " + id;
         }
@@ -70,7 +71,7 @@ public class Paciente {
 
     public String getPacientePorTelefono(String telefono) {
         if (this.telefono.equals(telefono)) {
-            return getPaciente();
+            return toString();
         } else {
             return "Paciente no encontrado con teléfono: " + telefono;
         }
