@@ -1,31 +1,47 @@
 package utils;
 
 import model.Agenda;
+import model.Paciente;
 import model.cita.Cita;
+import model.GestorPacientes;
 
 import java.util.Scanner;
+
+import javax.print.attribute.Size2DSyntax;
 
 public class SubMenus {
 
     // Submenú de Pacientes
-    public static void ejecutarMenuPaciente(Scanner sc) {
+
+    public static void ejecutarMenuPaciente(Scanner sc) { // ejecuta menu paciente recibe
+                                                          // parametr para no crear scanner
         int opcion;
         do {
             mostrarMenuPaciente();
-            opcion = sc.nextInt();
+
+            while (!sc.hasNextInt()) { // valida si no es un numero entero lo que se ingreso
+                System.out.println("Error: Ingresa solo números."); // imprime el error
+                sc.next(); // ignora lo que no sea numeros para evitar bucle inf
+            }
+            opcion = sc.nextInt(); // Después de la validación asigna el entero a opcion
+            sc.nextLine(); // Ignora el espacio vacio de enter
 
             switch (opcion) {
                 case 1:
-                    System.out.println("Dar de alta paciente");
+                    System.out.println("--- Dar de alta paciente ---");
+                    GestorPacientes.darDeAltaPaciente(sc);
                     break;
                 case 2:
-                    System.out.println("Modificar paciente");
+                    System.out.println("--- Modificar paciente ---");
+                    GestorPacientes.modificarPaciente(sc);
                     break;
                 case 3:
-                    System.out.println("Eliminar paciente");
+                    System.out.println("--- Eliminar paciente ---");
+                    GestorPacientes.eliminarPaciente(sc);
                     break;
                 case 4:
-                    System.out.println("Mostrar lista de pacientes");
+                    System.out.println("--- Mostrar lista de pacientes ---");
+                    GestorPacientes.mostrarListaPacientes();
                     break;
                 case 5:
                     System.out.println("Regresando al menú principal...");
@@ -33,6 +49,7 @@ public class SubMenus {
                 default:
                     System.out.println("Opción no válida, intenta de nuevo.");
             }
+            System.out.println();
 
         } while (opcion != 5);
     }
@@ -91,7 +108,7 @@ public class SubMenus {
                         try {
                             int id = Integer.parseInt(inputUsuario);
                             citaCancelada = agenda.cancelarCita(id);
-                        } catch ( NumberFormatException e) {
+                        } catch (NumberFormatException e) {
                             System.err.println("ID en formato invalido: " + e.getMessage());
                         }
 
