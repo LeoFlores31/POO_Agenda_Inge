@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public abstract class Cita {
     private static int totalCitas = 0;
@@ -18,6 +19,7 @@ public abstract class Cita {
 
     // todo: crear un HashMap<String, int> para almacenar el motivo y su duracion
     protected ArrayList<String> listaMotivos = new ArrayList<>();
+    protected HashMap<String, Integer> mapMotivos = new HashMap<>();
 
     public Cita(Paciente paciente, LocalDateTime fechaHora) {
         this.id = ++totalCitas;

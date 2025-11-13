@@ -36,7 +36,7 @@ public class Main {
         do {
             Menu.mostrarMenuPrincipal();
             opcion = sc.nextInt();
-
+            // todo: validar entradad de datos
             switch (opcion) {
                 case 1:
                     SubMenus.ejecutarMenuPaciente(sc); // TODO: Crear clase [GestorPacientes] para la logica de negocio
