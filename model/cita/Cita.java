@@ -7,6 +7,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public abstract class Cita {
     private static int totalCitas = 0;
@@ -17,7 +19,8 @@ public abstract class Cita {
     private int duracionMinutos;
 
     // todo: crear un HashMap<String, int> para almacenar el motivo y su duracion
-    protected ArrayList<String> listaMotivos = new ArrayList<>();
+//    protected ArrayList<String> listaMotivos = new ArrayList<>();
+    protected HashMap<String, Integer> motivosDisponibles = new HashMap<>();
 
     public Cita(Paciente paciente, LocalDateTime fechaHora) {
         this.id = ++totalCitas;
@@ -78,23 +81,21 @@ public abstract class Cita {
         this.motivo = motivo;
     }
 
-    public void mostrarMotivosDisponibles() {
-        for (int i = 0; i < listaMotivos.size(); i++) {
-            System.out.println(i + 1 + ") " + listaMotivos.get(i));
-        }
+    public ArrayList<String> getMotivosDisponibles() {
+        return new ArrayList<>(motivosDisponibles.keySet());
     }
 
-    public String getMotivoPorIndice(int i) {
-        try{
-            return listaMotivos.get(i);
-        } catch (IndexOutOfBoundsException e) {
-            Menu.mostrarMensajeError("Error: " + e.getMessage());
-            throw e;
+    public String getMotivoPorKey(String motivo) {
+        for (Map.Entry<String, Integer> entry : motivosDisponibles.entrySet()) {
+            if (entry.getKey().equals(motivo)) {
+                return entry.getKey();
+            }
         }
+        throw new IllegalArgumentException("No se encontró ningún motivo.");
     }
 
     public int getTotalMotivos() {
-        return listaMotivos.size();
+        return motivosDisponibles.size();
     }
 
     public void mostrarCita() {

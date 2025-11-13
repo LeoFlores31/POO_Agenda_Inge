@@ -6,18 +6,15 @@ import java.time.LocalDateTime;
 
 public class CitaVespertina extends Cita {
     public CitaVespertina(Paciente paciente, LocalDateTime fechaHora) {
-        super(paciente, fechaHora);
-        listaMotivos.add("Consulta general de psicologia");
-        listaMotivos.add("Crisis nerviosa");
-        listaMotivos.add("Cita infantil");
+        // constructor encadenado
+        this(paciente, fechaHora, "");
     }
 
-    public CitaVespertina(Paciente paciente, LocalDateTime fechaHora, String motivo, int duracionMinutos) {
+    public CitaVespertina(Paciente paciente, LocalDateTime fechaHora, String motivo) {
         super(paciente, fechaHora);
-        listaMotivos.add("Consulta general de psicologia");
-        listaMotivos.add("Crisis nerviosa");
-        listaMotivos.add("Cita infantil");
+        motivosDisponibles.put("Consulta general de psicologia", 60);
+        motivosDisponibles.put("Crisis nerviosa", 90);
+        motivosDisponibles.put("Cita infantil", 30);
         this.setMotivo(motivo);
-        this.setDuracionMinutos(duracionMinutos);
     }
 }
