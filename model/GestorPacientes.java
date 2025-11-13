@@ -12,6 +12,11 @@ public class GestorPacientes {
 
     private static ArrayList<Paciente> listaPacientes = new ArrayList<>(); // inicializa array list para pacientes
 
+    // temp
+    public static void agregarPaciente(Paciente paciente) {
+        listaPacientes.add(paciente);
+    }
+
     public static void darDeAltaPaciente(Scanner sc) {
         System.out.print("Ingresa el nombre del paciente: ");
         String nombre = sc.nextLine(); // recibe la entrada del usuario, soporta espacios
@@ -31,7 +36,7 @@ public class GestorPacientes {
             System.out.println("No hay pacientes registrados.");
             return; // regresa al menu después de imprimir el error
         }
-        System.out.println("--- LISTA DE PACIENTES ---");
+//        System.out.println("--- LISTA DE PACIENTES ---");
         for (Paciente tempPaciente : listaPacientes) { // for each paciente en el array y almacena en temp pac
             System.out.println(tempPaciente);
         }
@@ -157,7 +162,7 @@ public class GestorPacientes {
         return encontrados;
     }
 
-    private static Paciente buscarPacientePorId(String id) {
+    public static Paciente buscarPacientePorId(String id) {
         for (Paciente pac : listaPacientes) {
             if (pac.getId().equalsIgnoreCase(id)) {
                 return pac;

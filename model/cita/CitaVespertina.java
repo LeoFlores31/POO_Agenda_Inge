@@ -12,9 +12,9 @@ public class CitaVespertina extends Cita {
 
     public CitaVespertina(Paciente paciente, LocalDateTime fechaHora, String motivo) {
         super(paciente, fechaHora);
-        mapMotivos.put("Consulta general de psicologia", 60);
-        mapMotivos.put("Crisis nerviosa", 90);
-        mapMotivos.put("Cita infantil", 30);
+        motivosDisponibles.put("Consulta general de psicologia", 60);
+        motivosDisponibles.put("Crisis nerviosa", 90);
+        motivosDisponibles.put("Cita infantil", 30);
         this.setMotivo(motivo);
     }
 }

@@ -4,10 +4,8 @@ import model.Agenda;
 import model.Paciente;
 import model.cita.Cita;
 import model.GestorPacientes;
-
 import java.util.Scanner;
 
-import javax.print.attribute.Size2DSyntax;
 
 public class SubMenus {
 
@@ -85,10 +83,7 @@ public class SubMenus {
 
             switch (opcion) {
                 case 1:
-                    // todo: crear metodo en la clase controlador
-                    if (agenda.agendarCita()) {
-                        System.out.println("\nCita agregada con exito ✅");
-                    }
+                    ControladorCitas.manejarAgregarCita(sc, agenda);
                     break;
 
                 case 2:
@@ -96,29 +91,6 @@ public class SubMenus {
                     break;
 
                 case 3:
-                    boolean citaCancelada = false;
-                    do {
-                        System.out.print("Ingresa el ID de la cita a cancelar o presiona '0' para buscar la cita: ");
-                        inputUsuario = sc.nextLine();
-                        if (inputUsuario.equals("0")) {
-                            agenda.buscarCita();
-                            continue;
-                        }
-                        try {
-                            int id = Integer.parseInt(inputUsuario);
-                            citaCancelada = agenda.cancelarCita(id);
-                        } catch (NumberFormatException e) {
-                            System.err.println("ID en formato invalido: " + e.getMessage());
-                        }
-
-                        if (citaCancelada) {
-                            System.out.println("\n✅ Cita cancelada con exito!");
-                            break;
-                        } else {
-                            Menu.mostrarMensajeError("\n❌ No se encontro la cita. Intenta de nuevo.");
-                        }
-                    } while (true);
-
                     ControladorCitas.manejarCancelacionCita(sc, agenda);
                     break;
 

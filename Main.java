@@ -11,8 +11,7 @@ import utils.SubMenus;
 
 public class Main {
     public static void main(String[] args) {
-        GestorPacientes gestorPacientes = new GestorPacientes();
-        Agenda agenda = new Agenda(gestorPacientes);
+        Agenda agenda = new Agenda();
 
         Scanner sc = new Scanner(System.in);
         int opcion;
@@ -21,11 +20,11 @@ public class Main {
         Paciente p1 = new Paciente("Fer", "33 1212 5555", "fer@email.com");
         Paciente p2 = new Paciente("Leo", "33 1508 2345", "leo@email.com");
 
-        gestorPacientes.agregarPaciente(p1);
-        gestorPacientes.agregarPaciente(p2);
+        GestorPacientes.agregarPaciente(p1);
+        GestorPacientes.agregarPaciente(p2);
 
-        Cita c1 = new CitaMatutina(p1, LocalDateTime.now(), "Consulta nutricional",60);
-        Cita c2 = new CitaMatutina(p2, LocalDateTime.now().plusHours(1), "Consulta general de psicologia",20);
+        Cita c1 = new CitaMatutina(p1, LocalDateTime.now(), "Consulta nutricional");
+        Cita c2 = new CitaMatutina(p2, LocalDateTime.now().plusHours(1), "Consulta general de psicologia");
 
         agenda.agendarCita(c1);
         agenda.agendarCita(c2);

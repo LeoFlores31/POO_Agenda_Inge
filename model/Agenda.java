@@ -18,16 +18,16 @@ public class Agenda {
      */
 
     private ArrayList<Cita> citas;
-    private final GestorPacientes gestorPacientes;
+//    private final GestorPacientes gestorPacientes;
 
-    public Agenda (GestorPacientes gestorPacientes) {
+    public Agenda () {
         this.citas = new ArrayList<>();
-        this.gestorPacientes = gestorPacientes;
+//        this.gestorPacientes = gestorPacientes;
     }
 
-    public GestorPacientes getGestorPacientes() {
-        return gestorPacientes;
-    }
+//    public GestorPacientes getGestorPacientes() {
+//        return gestorPacientes;
+//    }
 
     public ArrayList<Cita> buscarCitaPorNombre(String nombre) {
         ArrayList<Cita> citasEncontradas = new ArrayList<>();
