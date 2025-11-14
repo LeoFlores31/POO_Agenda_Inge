@@ -1,5 +1,5 @@
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.time.LocalTime;
 import java.util.Scanner;
 
 import model.Agenda;
@@ -23,12 +23,27 @@ public class Main {
         GestorPacientes.agregarPaciente(p1);
         GestorPacientes.agregarPaciente(p2);
 
-        Cita c1 = new CitaMatutina(p1, LocalDateTime.now(), "Consulta nutricional");
-        Cita c2 = new CitaMatutina(p2, LocalDateTime.now().plusHours(1), "Consulta general de psicologia");
+        LocalTime horaCambioTurno = LocalTime.of(12, 0);
+        LocalDateTime fechaHora = LocalDateTime.now();
+        boolean citaMatutina = false;
+        boolean citaVespertina = false;
+
+        if (fechaHora.toLocalTime().isBefore(horaCambioTurno)) {
+            citaMatutina = true;
+        } else {
+            citaVespertina = true;
+        }
+        Cita c1 = null;
+        if (citaMatutina) c1 = new CitaMatutina(p1, fechaHora);
+        if (citaVespertina) c1 = new CitaVespertina(p1, fechaHora);
+
+        Cita c2 = null;
+        if (citaMatutina) c2 = new CitaMatutina(p2, fechaHora.plusHours(1));
+        if (citaVespertina) c2 = new CitaVespertina(p2, fechaHora.plusHours(1));
 
         agenda.agendarCita(c1);
         agenda.agendarCita(c2);
-        ////////////////////////////////////////
+        ///////////////////r/////////////////////
 
         Menu.mostrarMensaje("\tAgenda de Citas Medicas - El Inge 👨‍💻", 45);
 
@@ -38,7 +53,7 @@ public class Main {
             // todo: validar entradad de datos
             switch (opcion) {
                 case 1:
-                    SubMenus.ejecutarMenuPaciente(sc); // TODO: Crear clase [GestorPacientes] para la logica de negocio
+                    SubMenus.ejecutarMenuPaciente(sc);
                     break;
                 case 2:
                     SubMenus.ejecutarMenuAgenda(sc, agenda);
