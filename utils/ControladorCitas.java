@@ -39,23 +39,9 @@ public class ControladorCitas {
         if (citaVespertina) nuevaCita = new CitaVespertina(paciente, fechaHora);
 
         // pedir motivo
-        nuevaCita.setMotivo(preguntarMotivo(sc, nuevaCita));
-
-        // pedir duracion - todo: no pedir duracion, crear HashMap para obtener la duracion dinamicamente.
-        int duracion;
-        do {
-            System.out.print("\nDuracion (min): ");
-            try {
-                duracion = sc.nextInt();
-                sc.nextLine(); // limpiar el buffer
-                break;
-            } catch (InputMismatchException e) {
-                Menu.mostrarMensajeError("❌ Error. Ingresa un numero entero valido.");
-                sc.nextLine(); // limpiar el buffer
-            }
-        } while (true);
-
-        nuevaCita.setDuracionMinutos(duracion);
+        MotivoCita motivoCita = preguntarMotivo(sc, nuevaCita);
+        nuevaCita.setMotivo(motivoCita.getMotivo());
+        nuevaCita.setDuracionMinutos(motivoCita.getDuracion());
 
         String mensajeCitaCreada = "\tCita creada para " + nuevaCita.getPaciente().getNombre() +
                 " el dia " + nuevaCita.getFecha() + " a las " + nuevaCita.getHora() + " hrs.";
@@ -281,12 +267,15 @@ public class ControladorCitas {
     }
 
     private static Cita modificarHora(Scanner sc, Cita citaAModificar, Agenda agenda) {
+        Cita citaTemporal = new Cita() {};
+        citaTemporal.setFechaHora(citaAModificar.getFechaHora());
         String tipoCita = citaAModificar.getTipoCita();
         System.out.println("\nHora actual: " + citaAModificar.getHora());
         do {
             LocalTime nuevaHora = preguntarHora(sc, true);
-            citaAModificar.setHora(nuevaHora);
-            if (agenda.validarDisponibilidadCita(citaAModificar)){
+            citaTemporal.setHora(nuevaHora);
+            if (agenda.validarDisponibilidadCita(citaTemporal)){
+                citaAModificar.setHora(nuevaHora);
                 System.out.println("\n✅ Hora modificada con exito!");
                 if (!tipoCita.equals(citaAModificar.getTipoCita())){
                     Cita nuevaCita = cambiarInstanciaCita(citaAModificar, agenda);
@@ -314,24 +303,14 @@ public class ControladorCitas {
 
     private static void modificarMotivo(Scanner sc, Cita citaAModificar) {
         System.out.println("\nMotivo actual: " + citaAModificar.getMotivo());
-        String nuevoMotivo = preguntarMotivo(sc, citaAModificar);
-        citaAModificar.setMotivo(nuevoMotivo);
+        MotivoCita nuevoMotivo = preguntarMotivo(sc, citaAModificar);
+        citaAModificar.setMotivo(nuevoMotivo.getMotivo());
+        citaAModificar.setDuracionMinutos(nuevoMotivo.getDuracion());
         System.out.println("\n✅ Motivo de cita modificado con exito!");
     }
 
     private static Cita cambiarInstanciaCita (Cita citaAModificar, Agenda agenda){
-        Paciente paciente = citaAModificar.getPaciente();
-        LocalDateTime nuevaFechaHora = citaAModificar.getFechaHora();
-        String motivo = citaAModificar.getMotivo();
-
-        Cita nuevaCita = null;
-
-        if (citaAModificar.getTipoCita().equals("MATUTINA")) {
-            nuevaCita = new CitaMatutina(paciente, nuevaFechaHora, motivo);
-        } else if (citaAModificar.getTipoCita().equals("VESPERTINA")) {
-            nuevaCita = new CitaVespertina(paciente, nuevaFechaHora, motivo);
-        }
-
+        final Cita nuevaCita = getCita(citaAModificar);
         if (nuevaCita != null) {
             if (!agenda.reemplazarCita(citaAModificar, nuevaCita)) {
                 Menu.mostrarMensajeError("❌ Error al cambiar la instancia de la cita.");
@@ -343,12 +322,27 @@ public class ControladorCitas {
         return nuevaCita;
     }
 
-    private static String preguntarMotivo(Scanner sc, Cita cita) {
+    private static Cita getCita(Cita citaAModificar) {
+        Paciente paciente = citaAModificar.getPaciente();
+        LocalDateTime nuevaFechaHora = citaAModificar.getFechaHora();
+        int motivoCitaId = citaAModificar.motivoCitaId();
+
+        Cita nuevaCita = null;
+
+        if (citaAModificar.getTipoCita().equals("MATUTINA")) {
+            nuevaCita = new CitaMatutina(paciente, nuevaFechaHora, motivoCitaId);
+        } else if (citaAModificar.getTipoCita().equals("VESPERTINA")) {
+            nuevaCita = new CitaVespertina(paciente, nuevaFechaHora, motivoCitaId);
+        }
+        return nuevaCita;
+    }
+
+    private static MotivoCita preguntarMotivo(Scanner sc, Cita cita) {
         System.out.println("\nLos motivos disponibles para tu horario son:");
         ArrayList<String> motivos = cita.getMotivosDisponibles();
         mostrarMotivosCita(motivos);
         int opcion = -1;
-        String nuevoMotivo = "";
+        MotivoCita nuevoMotivo = null;
         do {
             System.out.print("\tOpcion: ");
             try {
@@ -363,8 +357,8 @@ public class ControladorCitas {
                 Menu.mostrarMensajeError("❌ Opcion Incorrecta. Intenta de nuevo.");
                 continue;
             }
-            nuevoMotivo = cita.getMotivoPorKey(motivos.get(opcion - 1));
-            System.out.println("\nOpcion seleccionada: " + nuevoMotivo);
+            nuevoMotivo = cita.getMotivoPorID(opcion);
+            System.out.println("\nOpcion seleccionada: " + nuevoMotivo.getMotivo());
         } while (opcion <= 0 || opcion > cita.getTotalMotivos());
         return nuevoMotivo;
     }
