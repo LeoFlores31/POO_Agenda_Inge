@@ -58,7 +58,7 @@ public class Paciente {
 
     @Override
     public String toString() {
-        return "ID: " + id + " | Nombre: " + nombre + " |  Telefono: " + telefono + "| Email: " + email;
+        return "ID: " + id + " | Nombre: " + nombre + " |  Telefono: " + telefono + " | Email: " + email;
     }
 
     public String getPacientePorID(String id) {
