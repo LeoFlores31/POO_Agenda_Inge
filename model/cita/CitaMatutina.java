@@ -15,7 +15,6 @@ public class CitaMatutina extends Cita {
         motivosDisponibles.put(1, new MotivoCita("Consulta nutricional", 60));
         motivosDisponibles.put(2, new MotivoCita("Chequeo de glucosa", 40));
         motivosDisponibles.put(3, new MotivoCita("Pesaje mensual", 15));
-        this.setMotivo(motivosDisponibles.get(idMotivo).getMotivo());
-        this.setDuracionMinutos(motivosDisponibles.get(idMotivo).getDuracion());
+        this.setIdMotivo(idMotivo);
     }
 }

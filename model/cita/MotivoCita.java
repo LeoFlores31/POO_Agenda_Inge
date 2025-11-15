@@ -1,8 +1,8 @@
 package model.cita;
 
 public class MotivoCita {
-    private String motivo;
-    private int duracion;
+    private final String motivo;
+    private final int duracion;
 
     MotivoCita(String motivo, int duracion) {
         this.motivo = motivo;
@@ -15,13 +15,5 @@ public class MotivoCita {
 
     public int getDuracion() {
         return duracion;
-    }
-
-    public void setMotivo(String motivo) {
-        this.motivo = motivo;
-    }
-
-    public void setDuracion(int duracion) {
-        this.duracion = duracion;
     }
 }

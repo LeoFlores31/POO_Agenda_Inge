@@ -8,27 +8,23 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 public abstract class Cita {
     private static int totalCitas = 0;
     private int id;
     private Paciente paciente;
     private LocalDateTime fechaHora;
-    private int motivoId;
-    // todo: usar motivo y duracionMinutos en lugar de modificar el HashMap
-//    private String motivo;
-//    private int duracionMinutos;
+    private int idMotivo;
 
     protected HashMap<Integer, MotivoCita> motivosDisponibles = new HashMap<>();
 
     public Cita() {}
 
-    public Cita(Paciente paciente, LocalDateTime fechaHora, int motivoId) {
+    public Cita(Paciente paciente, LocalDateTime fechaHora, int idMotivo) {
         this.id = ++totalCitas;
         this.paciente = paciente;
         this.fechaHora = fechaHora;
-        this.motivoId = motivoId;
+        this.idMotivo = idMotivo;
     }
 
     public String getTipoCita() {
@@ -76,11 +72,11 @@ public abstract class Cita {
     }
 
     public String getMotivo() {
-        return this.motivosDisponibles.get(motivoId).getMotivo();
+        return this.motivosDisponibles.get(idMotivo).getMotivo();
     }
 
-    public void setMotivo(String motivo) {
-        this.motivosDisponibles.get(motivoId).setMotivo(motivo);
+    public int getDuracionMinutos() {
+        return this.motivosDisponibles.get(idMotivo).getDuracion();
     }
 
     public ArrayList<String> getMotivosDisponibles() {
@@ -91,17 +87,20 @@ public abstract class Cita {
         return motivos;
     }
 
-    public int motivoCitaId() {
-        return this.motivoId;
+    public int getIdMotivo() {
+        return this.idMotivo;
     }
 
-    public MotivoCita getMotivoPorID(Integer id) {
-        for (Map.Entry<Integer, MotivoCita> entry : motivosDisponibles.entrySet()) {
-            if (Objects.equals(entry.getKey(), id)) {
-                return entry.getValue();
-            }
+    public void setIdMotivo(int id) {
+        this.idMotivo = id;
+    }
+
+    public MotivoCita getMotivoPorId(int id) {
+        MotivoCita motivo = motivosDisponibles.get(id);
+        if (motivo == null) {
+            throw new IllegalArgumentException("ID de motivo inválido: " + id);
         }
-        throw new IllegalArgumentException("No se encontró ningún motivo.");
+        return motivo;
     }
 
     public int getTotalMotivos() {
@@ -118,15 +117,7 @@ public abstract class Cita {
         System.out.println("-".repeat(40));
     }
 
-    public int getDuracionMinutos() {
-        return this.motivosDisponibles.get(motivoId).getDuracion();
-    }
-
-    public void setDuracionMinutos(int duracionMinutos) {
-        this.motivosDisponibles.get(motivoId).setDuracion(duracionMinutos);
-    }
-
     public LocalDateTime terminaEn() {
-        return this.fechaHora.plusMinutes(this.motivosDisponibles.get(motivoId).getDuracion());
+        return this.fechaHora.plusMinutes(this.motivosDisponibles.get(idMotivo).getDuracion());
     }
 }
