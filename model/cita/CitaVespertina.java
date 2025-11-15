@@ -15,7 +15,6 @@ public class CitaVespertina extends Cita {
         motivosDisponibles.put(1, new MotivoCita("Consulta general de psicologia", 60));
         motivosDisponibles.put(2, new MotivoCita("Crisis nerviosa", 90));
         motivosDisponibles.put(3, new MotivoCita("Cita infantil", 30));
-        this.setMotivo(motivosDisponibles.get(idMotivo).getMotivo());
-        this.setDuracionMinutos(motivosDisponibles.get(idMotivo).getDuracion());
+        this.setIdMotivo(idMotivo);
     }
 }

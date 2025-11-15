@@ -1,8 +1,6 @@
 package utils;
 
 import model.Agenda;
-import model.Paciente;
-import model.cita.Cita;
 import model.GestorPacientes;
 import java.util.Scanner;
 

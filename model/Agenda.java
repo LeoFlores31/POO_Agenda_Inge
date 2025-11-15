@@ -6,28 +6,11 @@ import model.cita.*;
 
 public class Agenda {
 
-    /*
-        CRUD:
-        agendarCita()                   ok!
-        modificarCita()
-        cancelarCita() / cancelar       ok!
-        mostrarCitasPorPaciente()       ok!
-        mostrarCitas()                  ok!
-        --
-        buscarCita()                    ok!
-     */
-
     private ArrayList<Cita> citas;
-//    private final GestorPacientes gestorPacientes;
 
     public Agenda () {
         this.citas = new ArrayList<>();
-//        this.gestorPacientes = gestorPacientes;
     }
-
-//    public GestorPacientes getGestorPacientes() {
-//        return gestorPacientes;
-//    }
 
     public ArrayList<Cita> buscarCitaPorNombre(String nombre) {
         ArrayList<Cita> citasEncontradas = new ArrayList<>();
