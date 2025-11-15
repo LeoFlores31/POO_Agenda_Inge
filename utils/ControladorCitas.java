@@ -39,9 +39,8 @@ public class ControladorCitas {
         if (citaVespertina) nuevaCita = new CitaVespertina(paciente, fechaHora);
 
         // pedir motivo
-        MotivoCita motivoCita = preguntarMotivo(sc, nuevaCita);
-        nuevaCita.setMotivo(motivoCita.getMotivo());
-        nuevaCita.setDuracionMinutos(motivoCita.getDuracion());
+        int motivoId = preguntarMotivo(sc, nuevaCita);
+        nuevaCita.setIdMotivo(motivoId);
 
         String mensajeCitaCreada = "\tCita creada para " + nuevaCita.getPaciente().getNombre() +
                 " el dia " + nuevaCita.getFecha() + " a las " + nuevaCita.getHora() + " hrs.";
@@ -303,9 +302,8 @@ public class ControladorCitas {
 
     private static void modificarMotivo(Scanner sc, Cita citaAModificar) {
         System.out.println("\nMotivo actual: " + citaAModificar.getMotivo());
-        MotivoCita nuevoMotivo = preguntarMotivo(sc, citaAModificar);
-        citaAModificar.setMotivo(nuevoMotivo.getMotivo());
-        citaAModificar.setDuracionMinutos(nuevoMotivo.getDuracion());
+        int motivoId = preguntarMotivo(sc, citaAModificar);
+        citaAModificar.setIdMotivo(motivoId);
         System.out.println("\n✅ Motivo de cita modificado con exito!");
     }
 
@@ -325,7 +323,7 @@ public class ControladorCitas {
     private static Cita getCita(Cita citaAModificar) {
         Paciente paciente = citaAModificar.getPaciente();
         LocalDateTime nuevaFechaHora = citaAModificar.getFechaHora();
-        int motivoCitaId = citaAModificar.motivoCitaId();
+        int motivoCitaId = citaAModificar.getIdMotivo();
 
         Cita nuevaCita = null;
 
@@ -337,30 +335,28 @@ public class ControladorCitas {
         return nuevaCita;
     }
 
-    private static MotivoCita preguntarMotivo(Scanner sc, Cita cita) {
+    private static int preguntarMotivo(Scanner sc, Cita cita) {
         System.out.println("\nLos motivos disponibles para tu horario son:");
         ArrayList<String> motivos = cita.getMotivosDisponibles();
         mostrarMotivosCita(motivos);
-        int opcion = -1;
-        MotivoCita nuevoMotivo = null;
+        int motivoId = -1;
         do {
             System.out.print("\tOpcion: ");
             try {
-                opcion = sc.nextInt();
+                motivoId = sc.nextInt();
                 sc.nextLine(); // limpiar el buffer
             } catch (InputMismatchException e) {
                 Menu.mostrarMensajeError("❌ Opcion Incorrecta. Intenta de nuevo.");
                 sc.nextLine(); // limpiar el buffer
                 continue;
             }
-            if (opcion <= 0 || opcion > cita.getTotalMotivos()){
+            if (motivoId <= 0 || motivoId > cita.getTotalMotivos()){
                 Menu.mostrarMensajeError("❌ Opcion Incorrecta. Intenta de nuevo.");
                 continue;
             }
-            nuevoMotivo = cita.getMotivoPorID(opcion);
-            System.out.println("\nOpcion seleccionada: " + nuevoMotivo.getMotivo());
-        } while (opcion <= 0 || opcion > cita.getTotalMotivos());
-        return nuevoMotivo;
+            System.out.println("\nOpcion seleccionada: " + cita.getMotivoPorId(motivoId).getMotivo());
+        } while (motivoId <= 0 || motivoId > cita.getTotalMotivos());
+        return motivoId;
     }
 
     private static void mostrarMotivosCita(ArrayList<String> motivos) {
