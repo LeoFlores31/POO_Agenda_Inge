@@ -1,5 +1,6 @@
 package model;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import model.cita.*;
@@ -74,19 +75,25 @@ public class Agenda {
     }
 
     public boolean validarDisponibilidadCita(Cita nuevaCita) {
-        boolean citaAceptada = false;
         if (citas.isEmpty()) {
             return true;
         }
 
+        LocalDateTime finNuevaCita = nuevaCita.terminaEn();
+
         for (Cita c : citas) {
-            if ( ( nuevaCita.getFechaHora().isEqual(c.getFechaHora()) ) || ( nuevaCita.getFechaHora().isAfter(c.getFechaHora()) && nuevaCita.getFechaHora().isBefore(c.terminaEn()) ) ) {
-                citaAceptada = false;
-            } else {
-                citaAceptada = true;
+            LocalDateTime inicioExistente = c.getFechaHora();
+            LocalDateTime finExistente = c.terminaEn();
+
+            boolean seSuperpone = nuevaCita.getFechaHora().isBefore(finExistente) &&
+                    inicioExistente.isBefore(finNuevaCita);
+
+            if (seSuperpone) {
+                return false;
             }
         }
-        return citaAceptada;
+
+        return true;
     }
 
     public boolean reemplazarCita(Cita antigua, Cita nueva) {

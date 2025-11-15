@@ -266,8 +266,7 @@ public class ControladorCitas {
     }
 
     private static Cita modificarHora(Scanner sc, Cita citaAModificar, Agenda agenda) {
-        Cita citaTemporal = new Cita() {};
-        citaTemporal.setFechaHora(citaAModificar.getFechaHora());
+        Cita citaTemporal = getCita(citaAModificar);
         String tipoCita = citaAModificar.getTipoCita();
         System.out.println("\nHora actual: " + citaAModificar.getHora());
         do {
@@ -325,14 +324,14 @@ public class ControladorCitas {
         LocalDateTime nuevaFechaHora = citaAModificar.getFechaHora();
         int motivoCitaId = citaAModificar.getIdMotivo();
 
-        Cita nuevaCita = null;
+        Cita citaTemp = null;
 
         if (citaAModificar.getTipoCita().equals("MATUTINA")) {
-            nuevaCita = new CitaMatutina(paciente, nuevaFechaHora, motivoCitaId);
+            citaTemp = new CitaMatutina(paciente, nuevaFechaHora, motivoCitaId);
         } else if (citaAModificar.getTipoCita().equals("VESPERTINA")) {
-            nuevaCita = new CitaVespertina(paciente, nuevaFechaHora, motivoCitaId);
+            citaTemp = new CitaVespertina(paciente, nuevaFechaHora, motivoCitaId);
         }
-        return nuevaCita;
+        return citaTemp;
     }
 
     private static int preguntarMotivo(Scanner sc, Cita cita) {
