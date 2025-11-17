@@ -13,6 +13,17 @@ public class Agenda {
         this.citas = new ArrayList<>();
     }
 
+    public void inicializarContador(ArrayList<Cita> citas) {
+        int maxId = 0;
+        for (Cita c : citas) {
+            int id = c.getId();
+            if (id > maxId) {
+                maxId = id;
+            }
+        }
+        Cita.setMaxId(maxId);
+    }
+
     public ArrayList<Cita> buscarCitaPorNombre(String nombre) {
         ArrayList<Cita> citasEncontradas = new ArrayList<>();
         for (Cita c : citas) {
@@ -54,6 +65,12 @@ public class Agenda {
 
     public ArrayList<Cita> getCitas() {
         return citas;
+    }
+
+    public void setCitas(ArrayList<Cita> citas) {
+        if (!citas.isEmpty()) {
+            this.citas = citas;
+        }
     }
 
     public Cita getCitaPorId(int id) {

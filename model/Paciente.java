@@ -1,6 +1,6 @@
 package model;
 
-public class Paciente {
+public class Paciente implements java.io.Serializable {
 
     private static int totalPaciente = 0;
 
@@ -22,6 +22,10 @@ public class Paciente {
         this.nombre = nombre;
         this.telefono = telefono;
         this.email = email;
+    }
+
+    public static void setMaxId(int maxId) {
+        totalPaciente = maxId;
     }
 
     public String getId() {
