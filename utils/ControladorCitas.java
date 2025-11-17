@@ -1,9 +1,9 @@
 package utils;
 
 import model.Agenda;
+import model.GestorPacientes;
 import model.Paciente;
 import model.cita.*;
-import model.GestorPacientes;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -15,15 +15,15 @@ import java.util.Scanner;
 
 public class ControladorCitas {
 
-    public static void manejarAgregarCita(Scanner sc, Agenda agenda) {
+    public static boolean manejarAgregarCita(Scanner sc, Agenda agenda, GestorPacientes gestorPacientes) {
         boolean citaMatutina = false;
         boolean citaVespertina = false;
 
         Menu.mostrarMensaje("\tNUEVA CITA 🗒️", 22);
 
         // pedir paciente
-        Paciente paciente = preguntarPaciente(sc, agenda);
-        if (paciente == null) return;
+        Paciente paciente = preguntarPaciente(sc, agenda, gestorPacientes);
+        if (paciente == null) return false;
 
         // pedir fecha y hora
         LocalDateTime fechaHora = preguntarFechaYHora(sc);
@@ -55,15 +55,17 @@ public class ControladorCitas {
                 nuevaCita = modificarHora(sc, nuevaCita, agenda);
             }
         } while (true);
+        return true;
     }
 
-    public static void manejarModicarCita(Scanner sc, Agenda agenda) {
+    public static boolean manejarModicarCita(Scanner sc, Agenda agenda) {
         String inputUsuario;
+        boolean citaModificada = false;
         do {
             System.out.print("\nIngresa el ID de la cita a modificar. Presiona '0' para buscar la cita o '-1' para regresar: ");
             inputUsuario = sc.nextLine();
             if (inputUsuario.equals("-1")) {
-                break;
+                return citaModificada;
             }
             if (inputUsuario.equals("0")) {
                 manejarBusquedaCitas(sc, agenda);
@@ -108,15 +110,19 @@ public class ControladorCitas {
                 switch (opcion) {
                     case 1:
                         modificarFecha(sc, citaAModificar);
+                        citaModificada = true;
                         break;
                     case 2:
                         citaAModificar = modificarHora(sc, citaAModificar, agenda);
+                        citaModificada = true;
                         break;
                     case 3:
                         modificarNombre(sc, citaAModificar);
+                        citaModificada = true;
                         break;
                     case 4:
                         modificarMotivo(sc, citaAModificar);
+                        citaModificada = true;
                         break;
                     case 5:
                         break;
@@ -128,13 +134,14 @@ public class ControladorCitas {
         } while (true);
     }
 
-    public static void manejarCancelacionCita(Scanner sc, Agenda agenda) {
+    public static boolean manejarCancelacionCita(Scanner sc, Agenda agenda) {
         String inputUsuario;
+        boolean citaCancelada = false;
         do {
             System.out.print("\nIngresa el ID de la cita a cancelar. Presiona '0' para buscar la cita o '-1' para regresar: ");
             inputUsuario = sc.nextLine();
             if (inputUsuario.equals("-1")) {
-                break;
+                return citaCancelada;
             }
             if (inputUsuario.equals("0")) {
                 manejarBusquedaCitas(sc, agenda);
@@ -154,6 +161,7 @@ public class ControladorCitas {
                 if (inputUsuario.equalsIgnoreCase("y")) {
                     if (agenda.cancelarCita(id)) {
                         System.out.println("\n✅ Cita cancelada con exito!");
+                        citaCancelada = true;
                         break;
                     } else {
                         Menu.mostrarMensajeError("❌ Ocurrio un error. Intenta de nuevo.");
@@ -163,6 +171,7 @@ public class ControladorCitas {
                 System.err.println("ID en formato invalido: " + e.getMessage());
             }
         } while (true);
+        return citaCancelada;
     }
 
     public static void manejarBusquedaCitas(Scanner sc, Agenda agenda) {
@@ -418,7 +427,7 @@ public class ControladorCitas {
         } while (true);
     }
 
-    private static Paciente preguntarPaciente(Scanner sc, Agenda agenda) {
+    private static Paciente preguntarPaciente(Scanner sc, Agenda agenda, GestorPacientes gestorPacientes) {
         Paciente paciente = null;
         do {
             String id;
@@ -428,11 +437,11 @@ public class ControladorCitas {
             if (id.equals("-1")) return paciente;
             if (id.equals("0")) {
                 System.out.print("\n");
-                GestorPacientes.mostrarListaPacientes();
+                gestorPacientes.mostrarListaPacientes();
                 continue;
             }
 
-            paciente = GestorPacientes.buscarPacientePorId(id);
+            paciente = gestorPacientes.buscarPacientePorId(id);
             if (paciente == null) {
                 Menu.mostrarMensajeError("❌ No se encontro el paciente. Intenta de nuevo.");
             } else {
