@@ -1,6 +1,6 @@
 package model.cita;
 
-public class MotivoCita {
+public class MotivoCita implements java.io.Serializable {
     private final String motivo;
     private final int duracion;
 
