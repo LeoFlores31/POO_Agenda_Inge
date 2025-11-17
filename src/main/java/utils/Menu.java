@@ -8,7 +8,7 @@ public class Menu {
         System.out.println("-".repeat(lineasSeparacion) + '\n');
     }
 
-    public static void mostrarMenuPrincipal() {
+    public static void  mostrarMenuPrincipal() {
         System.out.println("\n--- Menú Principal ---");
         System.out.println("1. Pacientes");
         System.out.println("2. Citas");

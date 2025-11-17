@@ -31,4 +31,10 @@ bin/
 .DS_Store
 
 *.class
-/data/
+/src/main/resources/data/
+
+# Archivos/Carpetas generados por Maven
+/target/
+
+# Archivos de IDEs
+*.iml

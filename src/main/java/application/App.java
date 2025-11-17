@@ -1,6 +1,10 @@
+package application;
+
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import javafx.application.Application;
+import javafx.stage.Stage;
 import dao.AgendaDAO;
 import dao.GestorPacientesDAO;
 import model.Agenda;
@@ -10,8 +14,11 @@ import model.cita.*;
 import utils.Menu;
 import utils.SubMenus;
 
-public class Main {
+public class App extends Application {
     public static void main(String[] args) {
+
+        launch();
+
         GestorPacientesDAO gestorPacientesDAO = new GestorPacientesDAO();
         ArrayList<Paciente> pacientes = gestorPacientesDAO.cargarPacientes();
 
@@ -61,5 +68,10 @@ public class Main {
         } while (opcion != 3);
 
         sc.close();
+    }
+
+    @Override
+    public void start(Stage stage) throws Exception {
+        stage.show();
     }
 }
