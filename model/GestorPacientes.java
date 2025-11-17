@@ -1,23 +1,48 @@
 package model;
 
-import utils.Menu;
-import model.Paciente;
-import utils.SubMenus;
-
 import java.util.ArrayList;
-import java.util.Optional;
 import java.util.Scanner;
 
 public class GestorPacientes {
 
-    private static ArrayList<Paciente> listaPacientes = new ArrayList<>(); // inicializa array list para pacientes
+    private ArrayList<Paciente> listaPacientes; // inicializa array list para pacientes
+
+    public GestorPacientes() {
+        this.listaPacientes = new ArrayList<>();
+    }
 
     // temp
-    public static void agregarPaciente(Paciente paciente) {
+    public void agregarPaciente(Paciente paciente) {
         listaPacientes.add(paciente);
     }
 
-    public static void darDeAltaPaciente(Scanner sc) {
+    public ArrayList<Paciente> getListaPacientes() {
+        return listaPacientes;
+    }
+
+    public void setListaPacientes(ArrayList<Paciente> pacientes) {
+        this.listaPacientes = pacientes;
+    }
+
+    public void inicializarContador(ArrayList<Paciente> pacientes) {
+        int maxId = 0;
+
+        for (Paciente p : pacientes) {
+            String id = p.getId();
+            String numString = id.substring(1);
+            try {
+                int idNumerico = Integer.parseInt(numString);
+                if (idNumerico > maxId) {
+                    maxId = idNumerico;
+                }
+            } catch (NumberFormatException e) {
+                System.err.println("Error al parsear ID: " + id);
+            }
+        }
+        Paciente.setMaxId(maxId);
+    }
+
+    public void darDeAltaPaciente(Scanner sc) {
         System.out.print("Ingresa el nombre del paciente: ");
         String nombre = sc.nextLine(); // recibe la entrada del usuario, soporta espacios
         System.out.print("Ingresa el teléfono del paciente: ");
@@ -31,7 +56,7 @@ public class GestorPacientes {
         System.out.println("¡Paciente '" + nombre + "' agregado con éxito con el ID: " + nuevoPaciente.getId() + "!");
     }
 
-    public static void mostrarListaPacientes() {
+    public void mostrarListaPacientes() {
         if (listaPacientes.isEmpty()) { // valida si el array esta vacio e imprime error en caso de
             System.out.println("No hay pacientes registrados.");
             return; // regresa al menu después de imprimir el error
@@ -42,7 +67,7 @@ public class GestorPacientes {
         }
     }
 
-    public static void modificarPaciente(Scanner sc) {
+    public void modificarPaciente(Scanner sc) {
         if (listaPacientes.isEmpty()) { // valida si la lista esta vacia
             System.out.println("No hay pacientes para modificar."); // imprime error
             return; // regresa al menu
@@ -80,7 +105,7 @@ public class GestorPacientes {
         }
     }
 
-    private static void procederConModificacion(Paciente paciente, Scanner sc) { // helper para las modificaciones
+    private void procederConModificacion(Paciente paciente, Scanner sc) { // helper para las modificaciones
                                                                                  // despues de validar
         System.out.println("Modificando a: " + paciente);
 
@@ -107,7 +132,7 @@ public class GestorPacientes {
         System.out.println(paciente);
     }
 
-    public static void eliminarPaciente(Scanner sc) {
+    public void eliminarPaciente(Scanner sc) {
         if (listaPacientes.isEmpty()) {
             System.out.println("No hay pacientes para eliminar.");
             return;
@@ -151,7 +176,7 @@ public class GestorPacientes {
         }
     }
 
-    private static ArrayList<Paciente> buscarPacientes(String terminoBusqueda) {
+    private ArrayList<Paciente> buscarPacientes(String terminoBusqueda) {
         ArrayList<Paciente> encontrados = new ArrayList<>();
         for (Paciente pac : listaPacientes) {
             if (pac.getId().equalsIgnoreCase(terminoBusqueda) ||
@@ -162,7 +187,7 @@ public class GestorPacientes {
         return encontrados;
     }
 
-    public static Paciente buscarPacientePorId(String id) {
+    public Paciente buscarPacientePorId(String id) {
         for (Paciente pac : listaPacientes) {
             if (pac.getId().equalsIgnoreCase(id)) {
                 return pac;

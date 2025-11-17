@@ -4,7 +4,7 @@ import model.Paciente;
 
 import java.time.LocalDateTime;
 
-public class CitaVespertina extends Cita {
+public class CitaVespertina extends Cita implements java.io.Serializable {
     public CitaVespertina(Paciente paciente, LocalDateTime fechaHora) {
         // constructor encadenado
         this(paciente, fechaHora, 1); // se asgina el motivo por default

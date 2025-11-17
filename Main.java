@@ -1,49 +1,42 @@
-import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.Scanner;
 
+import dao.AgendaDAO;
+import dao.GestorPacientesDAO;
 import model.Agenda;
 import model.GestorPacientes;
 import model.Paciente;
-import model.cita.*; // TODO: Eliminar, solo es para el ejemplo
+import model.cita.*;
 import utils.Menu;
 import utils.SubMenus;
 
 public class Main {
     public static void main(String[] args) {
+        GestorPacientesDAO gestorPacientesDAO = new GestorPacientesDAO();
+        ArrayList<Paciente> pacientes = gestorPacientesDAO.cargarPacientes();
+
+        GestorPacientes gestorPacientes = new GestorPacientes();
+        gestorPacientes.setListaPacientes(pacientes);
+        gestorPacientes.inicializarContador(pacientes);
+
+        AgendaDAO agendaDAO = new AgendaDAO();
+        ArrayList<Cita> citasArchivo = agendaDAO.cargarCitas();
+
         Agenda agenda = new Agenda();
+        agenda.setCitas(citasArchivo);
+        agenda.inicializarContador(citasArchivo);
 
         Scanner sc = new Scanner(System.in);
         int opcion;
 
         //////////// Bloque de prueba ////////////
-        Paciente p1 = new Paciente("Fer", "33 1212 5555", "fer@email.com");
-        Paciente p2 = new Paciente("Leo", "33 1508 2345", "leo@email.com");
-
-        GestorPacientes.agregarPaciente(p1);
-        GestorPacientes.agregarPaciente(p2);
-
-        LocalTime horaCambioTurno = LocalTime.of(12, 0);
-        LocalDateTime fechaHora = LocalDateTime.now();
-        boolean citaMatutina = false;
-        boolean citaVespertina = false;
-
-        if (fechaHora.toLocalTime().isBefore(horaCambioTurno)) {
-            citaMatutina = true;
-        } else {
-            citaVespertina = true;
-        }
-        Cita c1 = null;
-        if (citaMatutina) c1 = new CitaMatutina(p1, fechaHora);
-        if (citaVespertina) c1 = new CitaVespertina(p1, fechaHora);
-
-        Cita c2 = null;
-        if (citaMatutina) c2 = new CitaMatutina(p2, fechaHora.plusHours(1));
-        if (citaVespertina) c2 = new CitaVespertina(p2, fechaHora.plusHours(1));
-
-        agenda.agendarCita(c1);
-        agenda.agendarCita(c2);
-        ///////////////////r/////////////////////
+//        Paciente p1 = new Paciente("Fer", "33 1212 5555", "fer@email.com");
+//        Paciente p2 = new Paciente("Leo", "33 1508 2345", "leo@email.com");
+//
+//        gestorPacientes.agregarPaciente(p1);
+//        gestorPacientes.agregarPaciente(p2);
+//        gestorPacientesDAO.guardarPaciente(gestorPacientes.getListaPacientes());
+        /////////////////////////////////////////
 
         Menu.mostrarMensaje("\tAgenda de Citas Medicas - El Inge 👨‍💻", 45);
 
@@ -53,10 +46,10 @@ public class Main {
             // todo: validar entradad de datos
             switch (opcion) {
                 case 1:
-                    SubMenus.ejecutarMenuPaciente(sc);
+                    SubMenus.ejecutarMenuPaciente(sc, gestorPacientes, gestorPacientesDAO);
                     break;
                 case 2:
-                    SubMenus.ejecutarMenuAgenda(sc, agenda);
+                    SubMenus.ejecutarMenuAgenda(sc, agenda, agendaDAO, gestorPacientes);
                     break;
                 case 3:
                     System.out.println("Saliendo del sistema...");
@@ -68,6 +61,5 @@ public class Main {
         } while (opcion != 3);
 
         sc.close();
-
     }
 }

@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class Cita {
+public abstract class Cita implements java.io.Serializable {
     private static int totalCitas = 0;
     private int id;
     private Paciente paciente;
@@ -23,6 +23,10 @@ public abstract class Cita {
         this.paciente = paciente;
         this.fechaHora = fechaHora;
         this.idMotivo = idMotivo;
+    }
+
+    public static void setMaxId(int maxId) {
+        totalCitas = maxId;
     }
 
     public String getTipoCita() {
