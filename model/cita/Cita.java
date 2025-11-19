@@ -1,29 +1,32 @@
 package model.cita;
 
 import model.Paciente;
-import utils.Menu;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
-public abstract class Cita {
+public abstract class Cita implements java.io.Serializable {
     private static int totalCitas = 0;
     private int id;
     private Paciente paciente;
     private LocalDateTime fechaHora;
-    private String motivo;
-    private int duracionMinutos;
+    private int idMotivo;
 
-    // todo: crear un HashMap<String, int> para almacenar el motivo y su duracion
-    protected ArrayList<String> listaMotivos = new ArrayList<>();
+    protected HashMap<Integer, MotivoCita> motivosDisponibles = new HashMap<>();
 
-    public Cita(Paciente paciente, LocalDateTime fechaHora) {
+    public Cita(Paciente paciente, LocalDateTime fechaHora, int idMotivo) {
         this.id = ++totalCitas;
         this.paciente = paciente;
         this.fechaHora = fechaHora;
-        this.duracionMinutos = 0;
+        this.idMotivo = idMotivo;
+    }
+
+    public static void setMaxId(int maxId) {
+        totalCitas = maxId;
     }
 
     public String getTipoCita() {
@@ -71,30 +74,39 @@ public abstract class Cita {
     }
 
     public String getMotivo() {
+        return this.motivosDisponibles.get(idMotivo).getMotivo();
+    }
+
+    public int getDuracionMinutos() {
+        return this.motivosDisponibles.get(idMotivo).getDuracion();
+    }
+
+    public ArrayList<String> getMotivosDisponibles() {
+        ArrayList<String> motivos = new ArrayList<>();
+        for (Map.Entry<Integer, MotivoCita> entry : motivosDisponibles.entrySet()) {
+            motivos.add(entry.getValue().getMotivo());
+        }
+        return motivos;
+    }
+
+    public int getIdMotivo() {
+        return this.idMotivo;
+    }
+
+    public void setIdMotivo(int id) {
+        this.idMotivo = id;
+    }
+
+    public MotivoCita getMotivoPorId(int id) {
+        MotivoCita motivo = motivosDisponibles.get(id);
+        if (motivo == null) {
+            throw new IllegalArgumentException("ID de motivo inválido: " + id);
+        }
         return motivo;
     }
 
-    public void setMotivo(String motivo) {
-        this.motivo = motivo;
-    }
-
-    public void mostrarMotivosDisponibles() {
-        for (int i = 0; i < listaMotivos.size(); i++) {
-            System.out.println(i + 1 + ") " + listaMotivos.get(i));
-        }
-    }
-
-    public String getMotivoPorIndice(int i) {
-        try{
-            return listaMotivos.get(i);
-        } catch (IndexOutOfBoundsException e) {
-            Menu.mostrarMensajeError("Error: " + e.getMessage());
-            throw e;
-        }
-    }
-
     public int getTotalMotivos() {
-        return listaMotivos.size();
+        return motivosDisponibles.size();
     }
 
     public void mostrarCita() {
@@ -107,15 +119,7 @@ public abstract class Cita {
         System.out.println("-".repeat(40));
     }
 
-    public int getDuracionMinutos() {
-        return duracionMinutos;
-    }
-
-    public void setDuracionMinutos(int duracionMinutos) {
-        this.duracionMinutos = duracionMinutos;
-    }
-
     public LocalDateTime terminaEn() {
-        return this.fechaHora.plusMinutes(this.duracionMinutos);
+        return this.fechaHora.plusMinutes(this.motivosDisponibles.get(idMotivo).getDuracion());
     }
 }

@@ -1,21 +1,21 @@
 package utils;
 
+import dao.AgendaDAO;
+import dao.GestorPacientesDAO;
 import model.Agenda;
-import model.Paciente;
-import model.cita.Cita;
 import model.GestorPacientes;
-
 import java.util.Scanner;
 
-import javax.print.attribute.Size2DSyntax;
 
 public class SubMenus {
 
     // Submenú de Pacientes
 
-    public static void ejecutarMenuPaciente(Scanner sc) { // ejecuta menu paciente recibe
+    public static void ejecutarMenuPaciente(Scanner sc, GestorPacientes gestorPacientes, GestorPacientesDAO gestorPacientesDAO) { // ejecuta menu paciente recibe
                                                           // parametr para no crear scanner
         int opcion;
+        boolean datosModificados = false;
+
         do {
             mostrarMenuPaciente();
 
@@ -29,21 +29,28 @@ public class SubMenus {
             switch (opcion) {
                 case 1:
                     System.out.println("--- Dar de alta paciente ---");
-                    GestorPacientes.darDeAltaPaciente(sc);
+                    gestorPacientes.darDeAltaPaciente(sc);
+                    datosModificados = true;
                     break;
                 case 2:
                     System.out.println("--- Modificar paciente ---");
-                    GestorPacientes.modificarPaciente(sc);
+                    gestorPacientes.modificarPaciente(sc);
+                    datosModificados = true;
                     break;
                 case 3:
                     System.out.println("--- Eliminar paciente ---");
-                    GestorPacientes.eliminarPaciente(sc);
+                    gestorPacientes.eliminarPaciente(sc);
+                    datosModificados = true;
                     break;
                 case 4:
                     System.out.println("--- Mostrar lista de pacientes ---");
-                    GestorPacientes.mostrarListaPacientes();
+                    gestorPacientes.mostrarListaPacientes();
                     break;
                 case 5:
+                    if (datosModificados) {
+                        System.out.println("💾 Guardando datos...");
+                        gestorPacientesDAO.guardarPaciente(gestorPacientes.getListaPacientes());
+                    }
                     System.out.println("Regresando al menú principal...");
                     break;
                 default:
@@ -76,8 +83,15 @@ public class SubMenus {
         System.out.print("\n\tOpcion: ");
     }
 
-    public static void ejecutarMenuAgenda(Scanner sc, Agenda agenda) {
+    public static void ejecutarMenuAgenda(Scanner sc, Agenda agenda, AgendaDAO agendaDAO, GestorPacientes gestorPacientes) {
         int opcion;
+        boolean datosModificados = false;
+
+        if (gestorPacientes.getListaPacientes().isEmpty()) {
+            Menu.mostrarMensajeError("⚠️ Favor de registrar primero a los pacientes.");
+            return;
+        }
+
         do {
             mostrarMenuAgenda();
             opcion = sc.nextInt();
@@ -85,41 +99,22 @@ public class SubMenus {
 
             switch (opcion) {
                 case 1:
-                    // todo: crear metodo en la clase controlador
-                    if (agenda.agendarCita()) {
-                        System.out.println("\nCita agregada con exito ✅");
+                    // todo: hacer que retorne booleanos los cases
+                    if (ControladorCitas.manejarAgregarCita(sc, agenda, gestorPacientes)) {
+                        datosModificados = true;
                     }
                     break;
 
                 case 2:
-                    ControladorCitas.manejarModicarCita(sc, agenda);
+                    if (ControladorCitas.manejarModicarCita(sc, agenda)) {
+                        datosModificados = true;
+                    }
                     break;
 
                 case 3:
-                    boolean citaCancelada = false;
-                    do {
-                        System.out.print("Ingresa el ID de la cita a cancelar o presiona '0' para buscar la cita: ");
-                        inputUsuario = sc.nextLine();
-                        if (inputUsuario.equals("0")) {
-                            agenda.buscarCita();
-                            continue;
-                        }
-                        try {
-                            int id = Integer.parseInt(inputUsuario);
-                            citaCancelada = agenda.cancelarCita(id);
-                        } catch (NumberFormatException e) {
-                            System.err.println("ID en formato invalido: " + e.getMessage());
-                        }
-
-                        if (citaCancelada) {
-                            System.out.println("\n✅ Cita cancelada con exito!");
-                            break;
-                        } else {
-                            Menu.mostrarMensajeError("\n❌ No se encontro la cita. Intenta de nuevo.");
-                        }
-                    } while (true);
-
-                    ControladorCitas.manejarCancelacionCita(sc, agenda);
+                    if (ControladorCitas.manejarCancelacionCita(sc, agenda)) {
+                        datosModificados = true;
+                    }
                     break;
 
                 case 4:
@@ -131,6 +126,10 @@ public class SubMenus {
                     break;
 
                 case 6:
+                    if (datosModificados) {
+                        System.out.println("💾 Guardando datos...");
+                        agendaDAO.guardarCitas(agenda.getCitas());
+                    }
                     System.out.println("Regresando al menú principal...");
                     break;
 

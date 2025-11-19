@@ -4,20 +4,17 @@ import model.Paciente;
 
 import java.time.LocalDateTime;
 
-public class CitaVespertina extends Cita {
+public class CitaVespertina extends Cita implements java.io.Serializable {
     public CitaVespertina(Paciente paciente, LocalDateTime fechaHora) {
-        super(paciente, fechaHora);
-        listaMotivos.add("Consulta general de psicologia");
-        listaMotivos.add("Crisis nerviosa");
-        listaMotivos.add("Cita infantil");
+        // constructor encadenado
+        this(paciente, fechaHora, 1); // se asgina el motivo por default
     }
 
-    public CitaVespertina(Paciente paciente, LocalDateTime fechaHora, String motivo, int duracionMinutos) {
-        super(paciente, fechaHora);
-        listaMotivos.add("Consulta general de psicologia");
-        listaMotivos.add("Crisis nerviosa");
-        listaMotivos.add("Cita infantil");
-        this.setMotivo(motivo);
-        this.setDuracionMinutos(duracionMinutos);
+    public CitaVespertina(Paciente paciente, LocalDateTime fechaHora, int idMotivo) {
+        super(paciente, fechaHora, idMotivo);
+        motivosDisponibles.put(1, new MotivoCita("Consulta general de psicologia", 60));
+        motivosDisponibles.put(2, new MotivoCita("Crisis nerviosa", 90));
+        motivosDisponibles.put(3, new MotivoCita("Cita infantil", 30));
+        this.setIdMotivo(idMotivo);
     }
 }

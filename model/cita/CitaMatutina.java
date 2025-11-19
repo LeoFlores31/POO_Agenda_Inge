@@ -4,20 +4,17 @@ import model.Paciente;
 
 import java.time.LocalDateTime;
 
-public class CitaMatutina extends Cita {
+public class CitaMatutina extends Cita implements java.io.Serializable {
     public CitaMatutina(Paciente paciente, LocalDateTime fechaHora) {
-        super(paciente, fechaHora);
-        listaMotivos.add("Consulta nutricional");
-        listaMotivos.add("Chequeo de glucosa");
-        listaMotivos.add("Pesaje mensual");
+        // constructor encadenado
+        this(paciente, fechaHora, 1); // se asgina el motivo por default
     }
 
-    public CitaMatutina(Paciente paciente, LocalDateTime fechaHora, String motivo ,int duracionMinutos) {
-        super(paciente, fechaHora);
-        listaMotivos.add("Consulta nutricional");
-        listaMotivos.add("Chequeo de glucosa");
-        listaMotivos.add("Pesaje mensual");
-        this.setMotivo(motivo);
-        this.setDuracionMinutos(duracionMinutos);
+    public CitaMatutina(Paciente paciente, LocalDateTime fechaHora, int idMotivo) {
+        super(paciente, fechaHora, idMotivo);
+        motivosDisponibles.put(1, new MotivoCita("Consulta nutricional", 60));
+        motivosDisponibles.put(2, new MotivoCita("Chequeo de glucosa", 40));
+        motivosDisponibles.put(3, new MotivoCita("Pesaje mensual", 15));
+        this.setIdMotivo(idMotivo);
     }
 }
