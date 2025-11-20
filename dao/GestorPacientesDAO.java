@@ -7,8 +7,18 @@ import java.util.ArrayList;
 
 public class GestorPacientesDAO {
     private final String RUTA_ARCHIVO = "data/pacientes.dat";
+    private final String DIRECTORIO = "data";
 
     public boolean guardarPaciente(ArrayList<Paciente> pacientes) {
+        File directorio = new File(DIRECTORIO);
+
+        if (!directorio.exists()) {
+            if (!directorio.mkdirs()) {
+                System.err.println("❌ Error: No se pudo crear el directorio de datos: " + DIRECTORIO);
+                return false;
+            }
+        }
+
         try (
                 FileOutputStream fileOut = new FileOutputStream(RUTA_ARCHIVO);
                 ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
@@ -24,6 +34,15 @@ public class GestorPacientesDAO {
     }
 
     public ArrayList<Paciente> cargarPacientes() {
+        File directorio = new File(DIRECTORIO);
+
+        if (!directorio.exists()) {
+            if (!directorio.mkdirs()) {
+                System.err.println("❌ Error: No se pudo crear el directorio de datos: " + DIRECTORIO);
+                return null;
+            }
+        }
+        
         ArrayList<Paciente> pacientes = new ArrayList<>();
         try (
                 FileInputStream fileIn = new FileInputStream(RUTA_ARCHIVO);
