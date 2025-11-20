@@ -7,8 +7,18 @@ import java.util.ArrayList;
 
 public class AgendaDAO {
     private final String RUTA_ARCHIVO = "data/citas.dat";
+    private final String DIRECTORIO = "data";
 
     public boolean guardarCitas(ArrayList<Cita> citas) {
+        File directorio = new File(DIRECTORIO);
+
+        if (!directorio.exists()) {
+            if (!directorio.mkdirs()) {
+                System.err.println("❌ Error: No se pudo crear el directorio de datos: " + DIRECTORIO);
+                return false;
+            }
+        }
+
         try (
                 FileOutputStream fileOut = new FileOutputStream(RUTA_ARCHIVO);
                 ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
@@ -24,6 +34,15 @@ public class AgendaDAO {
     }
 
     public ArrayList<Cita> cargarCitas() {
+        File directorio = new File(DIRECTORIO);
+
+        if (!directorio.exists()) {
+            if (!directorio.mkdirs()) {
+                System.err.println("❌ Error: No se pudo crear el directorio de datos: " + DIRECTORIO);
+                return null;
+            }
+        }
+
         ArrayList<Cita> citas = new ArrayList<>();
         try (
                 FileInputStream fileIn = new FileInputStream(RUTA_ARCHIVO);
