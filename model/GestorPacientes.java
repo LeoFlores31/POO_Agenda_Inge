@@ -1,7 +1,11 @@
 package model;
 
+// TODO Validación por correo
+
 import java.util.ArrayList;
 import java.util.Scanner;
+
+import utils.Menu;
 
 public class GestorPacientes {
 
@@ -36,7 +40,7 @@ public class GestorPacientes {
                     maxId = idNumerico;
                 }
             } catch (NumberFormatException e) {
-                System.err.println("Error al parsear ID: " + id);
+                System.err.println(" ❌ Error al parsear ID: " + id);
             }
         }
         Paciente.setMaxId(maxId);
@@ -48,17 +52,17 @@ public class GestorPacientes {
         System.out.print("Ingresa el teléfono del paciente: ");
         String telefono = sc.nextLine();
         System.out.print("Ingresa el email del paciente: ");
-        String email = sc.nextLine();
+        String email = sc.nextLine(); 
 
         Paciente nuevoPaciente = new Paciente(nombre, telefono, email); // Constructor crea objeto nuevo P
         listaPacientes.add(nuevoPaciente); // agrega al paciente al array
 
-        System.out.println("¡Paciente '" + nombre + "' agregado con éxito con el ID: " + nuevoPaciente.getId() + "!");
+        System.out.println(" ✅ ¡Paciente '" + nombre + "' agregado con éxito con el ID: " + nuevoPaciente.getId() + "!");
     }
 
     public void mostrarListaPacientes() {
         if (listaPacientes.isEmpty()) { // valida si el array esta vacio e imprime error en caso de
-            System.out.println("No hay pacientes registrados.");
+            Menu.mostrarMensajeError(" ⚠️ No hay pacientes registrados");
             return; // regresa al menu después de imprimir el error
         }
 //        System.out.println("--- LISTA DE PACIENTES ---");
@@ -69,7 +73,7 @@ public class GestorPacientes {
 
     public void modificarPaciente(Scanner sc) {
         if (listaPacientes.isEmpty()) { // valida si la lista esta vacia
-            System.out.println("No hay pacientes para modificar."); // imprime error
+            Menu.mostrarMensajeError(" ⚠️ No hay pacientes para modificar"); // imprime error
             return; // regresa al menu
         }
 
@@ -80,10 +84,10 @@ public class GestorPacientes {
         // manda llamar para buscar pacientes y regresa la lista coincidencias
 
         if (pacientesEncontrados.isEmpty()) { // valida si el resultado esta vacio
-            System.out.println("Error: No se encontró ningún paciente con el ID o Nombre: " + terminoBusqueda);
+            Menu.mostrarMensajeError(" ❌ Error: No se encontro ningun paciente con el ID o Nombre" + terminoBusqueda);
         } else if (pacientesEncontrados.size() == 1) { // valida si se encontró un solo resultado
             Paciente pacienteAModificar = pacientesEncontrados.get(0); // obtienes el resultado que se encontro
-            System.out.println("Paciente encontrado:");
+            System.out.println(" ✅ Paciente encontrado:");
             System.out.println(pacienteAModificar); // imprime la información del paciente encontrado
             procederConModificacion(pacienteAModificar, sc); // llama al metodo para la modificacion
         } else {
@@ -98,7 +102,7 @@ public class GestorPacientes {
             Paciente pacienteAModificar = buscarPacientePorId(idExacto); // llama metodo buscar para empatarlo
 
             if (pacienteAModificar == null) { // valida que exista
-                System.out.println("Error: ID no válido o no encontrado en la lista de duplicados.");
+                Menu.mostrarMensajeError(" ❌ Error: ID no valido o no encontrado en la lista de duplicados");
             } else {
                 procederConModificacion(pacienteAModificar, sc); // si es valido procede con la modificacion
             }
@@ -128,13 +132,13 @@ public class GestorPacientes {
             paciente.setEmail(nuevoEmail);
         }
 
-        System.out.println("¡Paciente actualizado con éxito!");
+        System.out.println(" ✅ ¡Paciente actualizado con éxito!");
         System.out.println(paciente);
     }
 
     public void eliminarPaciente(Scanner sc) {
         if (listaPacientes.isEmpty()) {
-            System.out.println("No hay pacientes para eliminar.");
+            Menu.mostrarMensajeError(" ⚠️ No hay pacientes para eliminar");
             return;
         }
 
@@ -144,14 +148,14 @@ public class GestorPacientes {
         ArrayList<Paciente> pacientesEncontrados = buscarPacientes(terminoBusqueda);
 
         if (pacientesEncontrados.isEmpty()) {
-            System.out.println("Error: No se encontró ningún paciente con el ID o Nombre: " + terminoBusqueda);
+            Menu.mostrarMensajeError(" ❌ Error: No se encontro ningun paciente con el ID o Nombre" + terminoBusqueda);
         } else if (pacientesEncontrados.size() == 1) {
             Paciente pacienteAEliminar = pacientesEncontrados.get(0);
             String nombreEliminado = pacienteAEliminar.getNombre();
 
             listaPacientes.remove(pacienteAEliminar);
 
-            System.out.println("¡Paciente '" + nombreEliminado + "' eliminado con éxito!");
+            System.out.println(" ✅ ¡Paciente '" + nombreEliminado + "' eliminado con éxito!");
 
         } else {
             System.out.println("Se encontraron " + pacientesEncontrados.size()
@@ -165,13 +169,13 @@ public class GestorPacientes {
             Paciente pacienteAEliminar = buscarPacientePorId(idExacto);
 
             if (pacienteAEliminar == null) {
-                System.out.println("Error: ID no válido o no encontrado en la lista de duplicados.");
+                Menu.mostrarMensajeError(" ❌ Error: ID no valido o no encontrado en la lista de duplicados");
             } else {
                 String nombreEliminado = pacienteAEliminar.getNombre();
 
                 listaPacientes.remove(pacienteAEliminar);
 
-                System.out.println("¡Paciente '" + nombreEliminado + "' eliminado con éxito!");
+                System.out.println(" ✅ ¡Paciente '" + nombreEliminado + "' eliminado con éxito!");
             }
         }
     }
