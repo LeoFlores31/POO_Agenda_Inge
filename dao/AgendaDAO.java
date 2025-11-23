@@ -24,7 +24,7 @@ public class AgendaDAO {
                 ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
         ) {
             objectOut.writeObject(citas);
-            System.out.println("✅ Datos de citas guardados correctamente en " + RUTA_ARCHIVO);
+            // System.out.println("✅ Datos de citas guardados correctamente en " + RUTA_ARCHIVO);
             return true;
         } catch (IOException e) {
             System.err.println("❌ Error al guardar las citas: " + e.getMessage());
@@ -49,9 +49,9 @@ public class AgendaDAO {
                 ObjectInputStream objectIn = new ObjectInputStream(fileIn);
         ) {
             citas = (ArrayList<Cita>) objectIn.readObject();
-            System.out.println("✅ Datos de citas cargados correctamente desde " + RUTA_ARCHIVO);
+            // System.out.println("✅ Datos de citas cargados correctamente desde " + RUTA_ARCHIVO);
         } catch (FileNotFoundException e) {
-            System.out.println("ℹ️ Archivo de datos no encontrado. Se inicia con lista vacía de citas.");
+            // System.out.println("ℹ️ Archivo de datos no encontrado. Se inicia con lista vacía de citas.");
         } catch (IOException | ClassNotFoundException e) {
             System.err.println("❌ Error al cargar las citas: " + e.getMessage());
             e.printStackTrace();

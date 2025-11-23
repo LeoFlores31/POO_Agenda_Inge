@@ -24,7 +24,7 @@ public class GestorPacientesDAO {
                 ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
         ) {
             objectOut.writeObject(pacientes);
-            System.out.println("✅ Datos de Pacientes guardados correctamente en " + RUTA_ARCHIVO);
+            // System.out.println("✅ Datos de Pacientes guardados correctamente en " + RUTA_ARCHIVO);
             return true;
         } catch (IOException e) {
             System.err.println("❌ Error al guardar los pacientes: " + e.getMessage());
@@ -49,9 +49,9 @@ public class GestorPacientesDAO {
                 ObjectInputStream objectIn = new ObjectInputStream(fileIn);
         ) {
             pacientes = (ArrayList<Paciente>) objectIn.readObject();
-            System.out.println("✅ Datos de pacientes cargados correctamente desde " + RUTA_ARCHIVO);
+            // System.out.println("✅ Datos de pacientes cargados correctamente desde " + RUTA_ARCHIVO);
         } catch (FileNotFoundException e) {
-            System.out.println("ℹ️ Archivo de datos no encontrado. Se inicia con lista vacía de pacientes.");
+            // System.out.println("ℹ️ Archivo de datos no encontrado. Se inicia con lista vacía de pacientes.");
         } catch (IOException | ClassNotFoundException e) {
             System.err.println("❌ Error al cargar los pacientes: " + e.getMessage());
             e.printStackTrace();
