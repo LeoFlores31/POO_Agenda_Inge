@@ -44,7 +44,7 @@ public class GestorPacientes {
         Paciente.setMaxId(maxId);
     }
 
-    private boolean existeEmail(String email) { //recibe como parametro el email a verificar
+    public boolean existeEmail(String email) { //recibe como parametro el email a verificar
         for (Paciente p : listaPacientes) { //for each para todos los pacientes de la lista
             if (p.getEmail().equalsIgnoreCase(email)) { //compara el email del paciente con el email recibido
                 return true; // si lo encuentra regresa true
