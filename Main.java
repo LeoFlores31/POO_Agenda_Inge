@@ -30,25 +30,31 @@ public class Main {
         int opcion;
 
         //////////// Bloque de prueba ////////////
-    //    Paciente p1 = new Paciente("Fer", "33 1212 5555", "fer@email.com");
-    //    Paciente p2 = new Paciente("Leo", "33 1508 2345", "leo@email.com");
+       Paciente p1 = new Paciente("Fer", "33 1212 5555", "fer@email.com");
+       Paciente p2 = new Paciente("Leo", "33 1508 2345", "leo@email.com");
 
-    //    gestorPacientes.agregarPaciente(p1);
-    //    gestorPacientes.agregarPaciente(p2);
-    //    gestorPacientesDAO.guardarPaciente(gestorPacientes.getListaPacientes());
+       if (!gestorPacientes.existeEmail(p1.getEmail())){
+           gestorPacientes.agregarPaciente(p1);
+       }
+
+       if (!gestorPacientes.existeEmail(p2.getEmail())) {
+           gestorPacientes.agregarPaciente(p2);
+       }
+
+       gestorPacientesDAO.guardarPaciente(gestorPacientes.getListaPacientes());
         /////////////////////////////////////////
 
-        Menu.mostrarMensaje("\tAgenda de Citas Medicas - El Inge 👨‍💻", 45);
+        Menu.mostrarMensaje("\tAgenda de Citas Medicas - El Inge 👨‍💻", 55);
 
        do {
         Menu.mostrarMenuPrincipal();
 
         System.out.print("Selecciona una opción: ");
         while (!sc.hasNextInt()) {
-        System.out.println(" ❌ Entrada inválida. Por favor ingresa un número.");
-        System.out.print("Selecciona una opción: ");
-        sc.next(); // limpia la entrada incorrecta
-    }
+            System.out.println(" ❌ Entrada inválida. Por favor ingresa un número.");
+            System.out.print("Selecciona una opción: ");
+            sc.next(); // limpia la entrada incorrecta
+        }
         opcion = sc.nextInt();
 
         switch (opcion) {
