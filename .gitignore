@@ -38,3 +38,6 @@ bin/
 
 # Archivos de IDEs
 *.iml
+
+# Archivos .bat
+/data/
