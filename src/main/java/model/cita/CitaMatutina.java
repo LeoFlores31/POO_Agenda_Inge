@@ -2,9 +2,13 @@ package model.cita;
 
 import model.Paciente;
 
+import java.io.Serial;
 import java.time.LocalDateTime;
 
 public class CitaMatutina extends Cita implements java.io.Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
+
     public CitaMatutina(Paciente paciente, LocalDateTime fechaHora) {
         // constructor encadenado
         this(paciente, fechaHora, 1); // se asgina el motivo por default
@@ -16,5 +20,10 @@ public class CitaMatutina extends Cita implements java.io.Serializable {
         motivosDisponibles.put(2, new MotivoCita("Chequeo de glucosa", 40));
         motivosDisponibles.put(3, new MotivoCita("Pesaje mensual", 15));
         this.setIdMotivo(idMotivo);
+    }
+
+    @Override
+    public String getTurno() {
+        return "Matutino";
     }
 }

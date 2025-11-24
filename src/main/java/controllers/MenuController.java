@@ -1,5 +1,6 @@
 package controllers;
 
+import application.App;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -7,6 +8,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
+import utils.Paths;
+
 import java.util.Optional;
 
 public class MenuController {
@@ -23,6 +26,7 @@ public class MenuController {
     @FXML
     void mostrarMenuAgenda(ActionEvent event) {
         System.out.println("Mostrando Menu Agenda");
+        App.app.setScene(Paths.MENU_CITAS);
     }
 
     @FXML

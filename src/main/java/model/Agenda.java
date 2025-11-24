@@ -24,7 +24,7 @@ public class Agenda {
         Cita.setMaxId(maxId);
     }
 
-    public ArrayList<Cita> buscarCitaPorNombre(String nombre) {
+    public ArrayList<Cita> getCitaPorNombre(String nombre) {
         ArrayList<Cita> citasEncontradas = new ArrayList<>();
         for (Cita c : citas) {
             if (c.getPaciente().getNombre().equalsIgnoreCase(nombre)) {
@@ -34,7 +34,7 @@ public class Agenda {
         return citasEncontradas;
     }
 
-    public ArrayList<Cita> buscarCitaPorTelefono(String telefono) {
+    public ArrayList<Cita> getCitaPorTelefono(String telefono) {
         ArrayList<Cita> citasEncontradas = new ArrayList<>();
         for (Cita c : citas) {
             if (c.getPaciente().getTelefono().equals(telefono)) {
@@ -44,10 +44,20 @@ public class Agenda {
         return citasEncontradas;
     }
 
-    public ArrayList<Cita> buscarCitaPorEmail(String email) {
+    public ArrayList<Cita> getCitaPorEmail(String email) {
         ArrayList<Cita> citasEncontradas = new ArrayList<>();
         for (Cita c : citas) {
             if (c.getPaciente().getEmail().equalsIgnoreCase(email)) {
+                citasEncontradas.add(c);
+            }
+        }
+        return citasEncontradas;
+    }
+
+    public ArrayList<Cita> getCitaPorTurno(String turno) {
+        ArrayList<Cita> citasEncontradas = new ArrayList<>();
+        for (Cita c : citas) {
+            if (c.getTurno().equalsIgnoreCase(turno)) {
                 citasEncontradas.add(c);
             }
         }
