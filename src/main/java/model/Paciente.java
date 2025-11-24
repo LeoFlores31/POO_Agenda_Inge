@@ -1,6 +1,10 @@
 package model;
 
+import java.io.Serial;
+
 public class Paciente implements java.io.Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     private static int totalPaciente = 0;
 
