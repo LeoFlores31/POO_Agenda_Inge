@@ -22,6 +22,8 @@ public abstract class Cita implements java.io.Serializable {
 
     protected HashMap<Integer, MotivoCita> motivosDisponibles = new HashMap<>();
 
+    public Cita(){};
+
     public Cita(Paciente paciente, LocalDateTime fechaHora, int idMotivo) {
         this.id = ++totalCitas;
         this.paciente = paciente;

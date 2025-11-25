@@ -8,6 +8,7 @@ import java.util.Scanner;
 
 import controllers.MenuCitasController;
 import controllers.MenuController;
+import controllers.ModificarCitaController;
 import controllers.MostrarCitaController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -31,6 +32,8 @@ public class App extends Application {
 
     private Agenda agenda;
     private GestorPacientes gestorPacientes;
+    private AgendaDAO agendaDAO;
+    private GestorPacientesDAO gestorPacientesDAO;
 
     public static void main(String[] args) {
         launch();
@@ -47,14 +50,14 @@ public class App extends Application {
     }
 
     private void inicializarGestores() {
-        GestorPacientesDAO gestorPacientesDAO = new GestorPacientesDAO();
+        this.gestorPacientesDAO = new GestorPacientesDAO();
         ArrayList<Paciente> pacientes = gestorPacientesDAO.cargarPacientes();
 
         this.gestorPacientes = new GestorPacientes();
         this.gestorPacientes.setListaPacientes(pacientes);
         this.gestorPacientes.inicializarContador(pacientes);
 
-        AgendaDAO agendaDAO = new AgendaDAO();
+        this.agendaDAO = new AgendaDAO();
         ArrayList<Cita> citasArchivo = agendaDAO.cargarCitas();
 
         this.agenda = new Agenda();
@@ -90,7 +93,9 @@ public class App extends Application {
 
             if (controller instanceof MenuCitasController) {
                 ((MenuCitasController) controller).setDependencies(this.agenda, this.gestorPacientes);
-            } else if (controller instanceof MostrarCitaController) {
+            }
+
+            if (controller instanceof MostrarCitaController) {
                 ((MostrarCitaController) controller).setDependencies(this.agenda, this.gestorPacientes);
             }
 
@@ -99,5 +104,24 @@ public class App extends Application {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public void setScene(String path, Cita citaAEditar) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(path));
+            AnchorPane pane = loader.load();
+
+            Object controller = loader.getController();
+
+            if (controller instanceof ModificarCitaController) {
+                ((ModificarCitaController) controller).setDependencies(this.agenda, this.gestorPacientes, citaAEditar, this.agendaDAO);
+            }
+
+            stageWindow.setScene(new Scene(pane));
+            stageWindow.show();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 }
