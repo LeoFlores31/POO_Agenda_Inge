@@ -281,7 +281,7 @@ public class ControladorCitas {
         do {
             LocalTime nuevaHora = preguntarHora(sc, true);
             citaTemporal.setHora(nuevaHora);
-            if (agenda.validarDisponibilidadCita(citaTemporal)){
+            if (agenda.validarDisponibilidadCita(citaTemporal, 0)){
                 citaAModificar.setHora(nuevaHora);
                 System.out.println("\n✅ Hora modificada con exito!");
                 if (!tipoCita.equals(citaAModificar.getTipoCita())){

@@ -182,6 +182,12 @@ public class MostrarCitaController implements Initializable {
     @FXML
     void modificarCita(ActionEvent event) {
         limpiarCampos();
+        Cita citaAModificar = getDatosCita();
+        App.app.setScene(Paths.MODIFICAR_CITAS, citaAModificar);
+    }
+
+    private Cita getDatosCita() {
+        return tblCitas.getSelectionModel().getSelectedItem();
     }
 
     @FXML

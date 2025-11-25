@@ -9,6 +9,10 @@ public class CitaMatutina extends Cita implements java.io.Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
+    public CitaMatutina() {
+        this(null, null, 1);
+    };
+
     public CitaMatutina(Paciente paciente, LocalDateTime fechaHora) {
         // constructor encadenado
         this(paciente, fechaHora, 1); // se asgina el motivo por default

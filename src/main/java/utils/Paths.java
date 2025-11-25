@@ -5,4 +5,5 @@ public class Paths {
     public static final String MENU_CITAS = "/MenuCitas.fxml";
     public static final String CREAR_CITA = "/CrearCitas.fxml";
     public static final String MOSTRAR_CITAS = "/MostrarCita.fxml";
+    public static final String MODIFICAR_CITAS = "/ModificarCita.fxml";
 }
