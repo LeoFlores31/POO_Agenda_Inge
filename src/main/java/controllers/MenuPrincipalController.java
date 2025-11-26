@@ -29,7 +29,7 @@ public class MenuPrincipalController {
 
     @FXML
     void mostrarMenuPacientes(ActionEvent event) {
-        System.out.println("Mostrando Menu Paciente");
+        App.app.setScene(Paths.MENU_PACIENTES);
     }
 
     @FXML
