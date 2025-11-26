@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="800.0" prefWidth="664.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.MostrarPacientesController">
+    <children>
+        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#cccccc" height="95.0" stroke="BLACK" strokeType="INSIDE" width="665.0" />
+        <Label layoutX="288.0" layoutY="31.0" text="Pacientes " textFill="#333333">
+            <font>
+                <Font size="27.0" />
+            </font>
+        </Label>
+        <Button fx:id="btnRegresar" layoutX="513.0" layoutY="31.0" mnemonicParsing="false" onAction="#regresarMenuPacientes" prefHeight="39.0" prefWidth="111.0" style="-fx-background-color: #636363;" text="Regresar" textFill="WHITE" underline="true" />
+        <Label layoutX="74.0" layoutY="144.0" prefHeight="26.0" prefWidth="72.0" text="Buscar por:" />
+        <ChoiceBox fx:id="ddBuscarPor" layoutX="151.0" layoutY="144.0" prefHeight="26.0" prefWidth="117.0" />
+        <Label fx:id="lblNombreBuscar" layoutX="74.0" layoutY="209.0" prefHeight="26.0" prefWidth="58.0" text="Nombre" visible="false" />
+        <TextField fx:id="txtNombreBuscar" layoutX="151.0" layoutY="209.0" prefHeight="26.0" prefWidth="117.0" promptText="nombre" visible="false" />
+        <Label fx:id="lblTelefonoBuscar" layoutX="74.0" layoutY="209.0" prefHeight="26.0" prefWidth="58.0" text="Telefono" visible="false" />
+        <TextField fx:id="txtTelefonoBuscar" layoutX="151.0" layoutY="209.0" prefHeight="26.0" prefWidth="117.0" promptText="telefono" visible="false" />
+        <Label fx:id="lblEmailBuscar" layoutX="74.0" layoutY="209.0" prefHeight="26.0" prefWidth="58.0" text="Email" visible="false" />
+        <TextField fx:id="txtEmailBuscar" layoutX="151.0" layoutY="209.0" prefHeight="26.0" prefWidth="117.0" promptText="email" visible="false" />
+      <Label fx:id="lblIDBuscar" layoutX="74.0" layoutY="209.0" prefHeight="26.0" prefWidth="58.0" text="ID" visible="false" />
+      <TextField fx:id="txtIDBuscar" layoutX="151.0" layoutY="209.0" prefHeight="26.0" prefWidth="117.0" promptText="ID" visible="false" />
+        <Button fx:id="btnBuscarPaciente" layoutX="505.0" layoutY="141.0" mnemonicParsing="false" onAction="#buscarPaciente" prefHeight="33.0" prefWidth="127.0" style="-fx-background-color: #4CAF50;" text="Buscar" textFill="WHITE" />
+        <Button fx:id="btnModificarPaciente" layoutX="505.0" layoutY="194.0" mnemonicParsing="false" onAction="#modificarPaciente" prefHeight="33.0" prefWidth="127.0" style="-fx-background-color: #FF9800;" text="Modificar Paciente" textFill="WHITE" visible="false" />
+        <Button fx:id="btnEliminarPaciente" layoutX="507.0" layoutY="247.0" mnemonicParsing="false" onAction="#eliminarPaciente" prefHeight="33.0" prefWidth="127.0" style="-fx-background-color: #F44336;" text="Eliminar Paciente" textFill="WHITE" visible="false" />
+        <TableView fx:id="tblPacientes" layoutX="80.0" layoutY="468.0" prefHeight="280.0" prefWidth="506.0">
+            <columns>
+                <TableColumn fx:id="colID" prefWidth="38.0" text="ID" />
+                <TableColumn fx:id="colNombre" prefWidth="163.0" text="Nombre Paciente" />
+                <TableColumn fx:id="colTelefono" prefWidth="129.0" text="Telefono" />
+                <TableColumn fx:id="colEmail" prefWidth="179.0" text="Email" />
+            </columns>
+        </TableView>
+        <Button fx:id="btnCrearPaciente" layoutX="35.0" layoutY="31.0" mnemonicParsing="false" onAction="#irACrearPaciente" prefHeight="39.0" prefWidth="111.0" style="-fx-background-color: #2196F3;" text="Crear Paciente" textFill="WHITE" underline="true" />
+      <Label fx:id="lblID" layoutX="196.0" layoutY="317.0" prefHeight="17.0" prefWidth="50.0" text="ID" visible="false" />
+      <TextField fx:id="txtID" disable="true" layoutX="265.0" layoutY="312.0" prefHeight="26.0" prefWidth="162.0" promptText="ID" visible="false" />
+      <Label fx:id="lblNombre" layoutX="196.0" layoutY="350.0" prefHeight="17.0" prefWidth="50.0" text="Nombre" visible="false" />
+      <TextField fx:id="txtNombre" layoutX="265.0" layoutY="345.0" prefHeight="26.0" prefWidth="162.0" promptText="nombre" visible="false" />
+      <Label fx:id="lblTelefono" layoutX="196.0" layoutY="383.0" prefHeight="17.0" prefWidth="50.0" text="Telefono" visible="false" />
+      <TextField fx:id="txtTelefono" layoutX="265.0" layoutY="378.0" prefHeight="26.0" prefWidth="162.0" promptText="telefono" visible="false" />
+      <Label fx:id="lblEmail" layoutX="196.0" layoutY="415.0" prefHeight="17.0" prefWidth="50.0" text="Email" visible="false" />
+      <TextField fx:id="txtEmail" layoutX="265.0" layoutY="410.0" prefHeight="26.0" prefWidth="162.0" promptText="email" visible="false" />
+    </children>
+</AnchorPane>

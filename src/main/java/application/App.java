@@ -3,10 +3,10 @@ package application;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import controllers.MenuCitasController;
 import controllers.ModificarCitaController;
 import controllers.MostrarCitaController;
 import controllers.CrearCitaController;
+import controllers.MostrarPacientesController;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -89,16 +89,16 @@ public class App extends Application {
 
             Object controller = loader.getController();
 
-            if (controller instanceof MenuCitasController) {
-                ((MenuCitasController) controller).setDependencies(this.agenda, this.gestorPacientes);
-            }
-
             if (controller instanceof MostrarCitaController) {
                 ((MostrarCitaController) controller).setDependencies(this.agenda, this.gestorPacientes, this.agendaDAO);
             }
 
             if (controller instanceof CrearCitaController) {
                 ((CrearCitaController) controller).setDependencies(this.agenda, this.gestorPacientes, this.agendaDAO);
+            }
+
+            if (controller instanceof MostrarPacientesController) {
+                ((MostrarPacientesController) controller).setDependencies(this.gestorPacientes, this.gestorPacientesDAO);
             }
 
             stageWindow.setScene(new Scene(pane));
