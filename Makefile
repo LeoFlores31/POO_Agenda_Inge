@@ -48,9 +48,11 @@ copy-resources:
 	cp -f $(RESOURCES_DIR)/*.fxml $(OUT_DIR)/ 2>/dev/null || echo "⚠️ No se encontraron archivos FXML"
 	@echo "✅ Recursos copiados"
 
-run: compile copy-resources
+run:
 	@echo "🚀 Ejecutando aplicación..."
 	$(JAVA) $(JAVA_FLAGS) application.App
+
+compile-run: compile copy-resources run
 
 scene-builder:
 	@echo "🎨 Abriendo SceneBuilder..."
@@ -83,7 +85,8 @@ help:
 	@echo "📚 Comandos disponibles:"
 	@echo "  make compile			- Compila el proyecto"
 	@echo "  make copy-resources	 - Copia los FXML al root de out"
-	@echo "  make run				- Compila y ejecuta la aplicación"
+	@echo "  make compile-run		 - Compila y ejecuta la aplicación"
+	@echo "  make run				- Ejecuta la aplicación"
 	@echo "  make scene-builder FXML=File.fxml - Abre un FXML en SceneBuilder"
 	@echo "  make clean			  - Elimina los archivos compilados"
 # ...existing code...
