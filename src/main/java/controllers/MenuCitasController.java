@@ -29,7 +29,7 @@ public class MenuCitasController {
 
     @FXML
     void crearCita(ActionEvent event) {
-        System.out.println("Creando cita...");
+        App.app.setScene(Paths.CREAR_CITA);
     }
 
     @FXML

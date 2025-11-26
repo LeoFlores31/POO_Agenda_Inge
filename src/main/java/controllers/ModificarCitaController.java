@@ -4,8 +4,6 @@ import application.App;
 import dao.AgendaDAO;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import model.Agenda;
@@ -17,6 +15,7 @@ import javafx.fxml.FXML;
 import model.cita.CitaMatutina;
 import model.cita.CitaVespertina;
 import utils.Paths;
+import utils.Alertas;
 
 import java.net.URL;
 import java.time.LocalDate;
@@ -201,13 +200,13 @@ public class ModificarCitaController implements Initializable {
         int nuevoIdMotivo = ddMotivo.getSelectionModel().getSelectedIndex() + 1;
         Cita citaOriginal = agenda.getCitaPorId(citaID);
         if (citaOriginal == null) {
-            mostarWarning("Error", "La cita a modificar no fue encontrada en la base de datos.");
+            Alertas.mostarWarning("Error", "La cita a modificar no fue encontrada en la base de datos.");
             return;
         }
 
         Paciente nuevoPaciente = validarYObtenerNombrePaciente(txtNombre.getText());
         if (nuevoPaciente == null){
-            mostarWarning("Nombre Invalido", "Por favor, ingresa un nombre correcto.");
+            Alertas.mostarWarning("Nombre Invalido", "Por favor, ingresa un nombre correcto.");
             return;
         }
 
@@ -234,9 +233,9 @@ public class ModificarCitaController implements Initializable {
             citaOriginal.setIdMotivo(nuevoIdMotivo);
 
             actualizarTablaCita(this.agenda.getCitas());
-            mostarSuccess("Actualización Exitosa", "La cita ha sido modificada correctamente.");
+            Alertas.mostarSuccess("Actualización Exitosa", "La cita ha sido modificada correctamente.");
         } else {
-            mostarWarning("No hay disponibilidad", "Por favor, selecciona otro horario.");
+            Alertas.mostarWarning("No hay disponibilidad", "Por favor, selecciona otro horario.");
         }
     }
 
@@ -244,7 +243,7 @@ public class ModificarCitaController implements Initializable {
         final Cita nuevaCita = getInstanciaCita(citaAModificar);
         if (nuevaCita != null) {
             if (!agenda.reemplazarCita(citaAModificar, nuevaCita)) {
-                mostarWarning("Error al modificar la Cita", "No se pudo cambiar el tipo de Cita. Por favor, intenta de nuevo.");
+                Alertas.mostarWarning("Error al modificar la Cita", "No se pudo cambiar el tipo de Cita. Por favor, intenta de nuevo.");
                 return null;
             } else {
                 nuevaCita.setId(citaAModificar.getId());
@@ -275,22 +274,6 @@ public class ModificarCitaController implements Initializable {
             }
         }
         return null;
-    }
-
-    private void mostarWarning(String header, String context) {
-        Alert alert = new Alert(AlertType.WARNING);
-        alert.setTitle("Advertencia");
-        alert.setHeaderText(header);
-        alert.setContentText(context);
-        alert.showAndWait();
-    }
-
-    private void mostarSuccess(String header, String context) {
-        Alert alert = new Alert(AlertType.INFORMATION);
-        alert.setTitle("Exito");
-        alert.setHeaderText(header);
-        alert.setContentText(context);
-        alert.showAndWait();
     }
 
     @FXML
@@ -332,27 +315,27 @@ public class ModificarCitaController implements Initializable {
 
     private boolean validarCamposParaActualizar() {
         if (txtNombre.getText().trim().isEmpty()) {
-            mostarWarning("El campo Nombre del paciente no puede estar vacío.", "Campo Vacío");
+            Alertas.mostarWarning("El campo Nombre del paciente no puede estar vacío.", "Campo Vacío");
             return false;
         }
 
         if (pickDate.getValue() == null) {
-            mostarWarning("Debes seleccionar una Fecha válida.", "Selección Incompleta");
+            Alertas.mostarWarning("Debes seleccionar una Fecha válida.", "Selección Incompleta");
             return false;
         }
 
         if (cbxHora.getValue() == null) {
-            mostarWarning("Debes seleccionar la Hora de inicio de la cita.", "Selección Incompleta");
+            Alertas.mostarWarning("Debes seleccionar la Hora de inicio de la cita.", "Selección Incompleta");
             return false;
         }
 
         if (cbxMinutos.getValue() == null) {
-            mostarWarning("Debes seleccionar los Minutos de inicio de la cita.", "Selección Incompleta");
+            Alertas.mostarWarning("Debes seleccionar los Minutos de inicio de la cita.", "Selección Incompleta");
             return false;
         }
 
         if (ddMotivo.getValue() == null) {
-            mostarWarning("Debes seleccionar el Motivo de la cita.", "Selección Incompleta");
+            Alertas.mostarWarning("Debes seleccionar el Motivo de la cita.", "Selección Incompleta");
             return false;
         }
 
@@ -362,7 +345,7 @@ public class ModificarCitaController implements Initializable {
     @FXML
     void guardarCita(ActionEvent event) {
         agendaDAO.guardarCitas(agenda.getCitas());
-        mostarSuccess("Operacion exitosa", "Las citas han sido guardadas correctamente.");
+        Alertas.mostarSuccess("Operacion exitosa", "Las citas han sido guardadas correctamente.");
     }
 
 }
