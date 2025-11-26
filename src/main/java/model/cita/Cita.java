@@ -125,6 +125,14 @@ public abstract class Cita implements java.io.Serializable {
         System.out.println("-".repeat(40));
     }
 
+    public String getInforCita() {
+        return
+            "Paciente: " + paciente.getNombre() + '\n' +
+            "Motivo: " + this.getMotivo() + '\n' +
+            "Fecha: " + this.getFecha() + '\n' +
+            "De: " + this.getHora() + " a " + this.terminaEn().toLocalTime() + '\n';
+    }
+
     public LocalDateTime terminaEn() {
         return this.fechaHora.plusMinutes(this.motivosDisponibles.get(idMotivo).getDuracion());
     }

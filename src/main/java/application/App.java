@@ -96,7 +96,7 @@ public class App extends Application {
             }
 
             if (controller instanceof MostrarCitaController) {
-                ((MostrarCitaController) controller).setDependencies(this.agenda, this.gestorPacientes);
+                ((MostrarCitaController) controller).setDependencies(this.agenda, this.gestorPacientes, this.agendaDAO);
             }
 
             stageWindow.setScene(new Scene(pane));

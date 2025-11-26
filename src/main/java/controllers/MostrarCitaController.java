@@ -1,18 +1,14 @@
 package controllers;
 
 import application.App;
+import dao.AgendaDAO;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 
-import javafx.scene.control.Alert;
+import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.TextField;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import model.Agenda;
@@ -25,15 +21,18 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.Optional;
 
 public class MostrarCitaController implements Initializable {
 
     private Agenda agenda;
     private GestorPacientes gestorPacientes;
+    private AgendaDAO agendaDAO;
 
-    public void setDependencies(Agenda agenda, GestorPacientes gestorPacientes) {
+    public void setDependencies(Agenda agenda, GestorPacientes gestorPacientes, AgendaDAO agendaDAO) {
         this.agenda = agenda;
         this.gestorPacientes = gestorPacientes;
+        this.agendaDAO = agendaDAO;
         actualizarTabla(this.agenda.getCitas());
     }
 
@@ -176,6 +175,26 @@ public class MostrarCitaController implements Initializable {
 
     @FXML
     void cancelarCita(ActionEvent event) {
+        Cita citaACancelar = getDatosCita();
+
+        Alert alert = new Alert(AlertType.CONFIRMATION);
+        alert.setTitle("Cancelar cita");
+        alert.setHeaderText("¿Está seguro que quieres cancelar la cita?");
+        alert.setContentText(citaACancelar.getInforCita() + "\n" + "Por favor, confirma. Una vez cancelada no se puede recuperar la cita.");
+
+        Optional<ButtonType> resultado = alert.showAndWait();
+
+        if (resultado.isPresent() && resultado.get() == ButtonType.OK) {
+            if (agenda.cancelarCita(citaACancelar.getId())) {
+                System.out.println("Se elimino la cita: " + citaACancelar.getInforCita());
+                agendaDAO.guardarCitas(agenda.getCitas());
+                mostarSuccess("Operacion exitosa", "La cita se ha cancelado exitosamente.");
+                actualizarTabla(agenda.getCitas());
+            } else {
+                System.out.println("Ocurrio un error al cancelar la cita: " + citaACancelar.getInforCita());
+                mostarError("Error al cancelar la cita", "Ocurrio un error al intentar cancelar la cita. Intenta de nuevo o contacta al administrador.");
+            }
+        }
         limpiarCampos();
     }
 
@@ -272,5 +291,21 @@ public class MostrarCitaController implements Initializable {
                 ddTurno.setVisible(true);
             }
         }
+    }
+
+    private void mostarSuccess(String header, String context) {
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.setTitle("Exito");
+        alert.setHeaderText(header);
+        alert.setContentText(context);
+        alert.showAndWait();
+    }
+
+    private void mostarError(String header, String context) {
+        Alert alert = new Alert(AlertType.ERROR);
+        alert.setTitle("ERROR");
+        alert.setHeaderText(header);
+        alert.setContentText(context);
+        alert.showAndWait();
     }
 }
