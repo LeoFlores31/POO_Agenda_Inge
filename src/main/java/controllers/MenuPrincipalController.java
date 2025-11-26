@@ -10,7 +10,7 @@ import utils.Paths;
 import utils.Alertas;
 import java.util.Optional;
 
-public class MenuController {
+public class MenuPrincipalController {
 
     @FXML
     private Button btnAgenda;
