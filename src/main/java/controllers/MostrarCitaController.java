@@ -2,13 +2,11 @@ package controllers;
 
 import application.App;
 import dao.AgendaDAO;
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 
 import javafx.scene.control.*;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import model.Agenda;
@@ -16,6 +14,7 @@ import model.GestorPacientes;
 import model.Paciente;
 import model.cita.Cita;
 import utils.Paths;
+import utils.Alertas;
 
 import java.net.URL;
 import java.time.LocalDate;
@@ -38,6 +37,9 @@ public class MostrarCitaController implements Initializable {
 
     @FXML
     private Button btnBuscarCita;
+
+    @FXML
+    private Button btnCrearCita;
 
     @FXML
     private Button btnCancelarCita;
@@ -115,7 +117,7 @@ public class MostrarCitaController implements Initializable {
         ArrayList<Cita> citas = new ArrayList<>();
 
         if (ddBuscarPor.getValue() == null) {
-            mostarWarningCampoRequerido();
+            Alertas.mostarWarning("Campo Requerido Vacío", "Por favor, ingresa el valor de busqueda correcto.");
             return;
         }
 
@@ -126,7 +128,7 @@ public class MostrarCitaController implements Initializable {
             String nombreBuscado = txtNombre.getText().trim();
 
             if (nombreBuscado.isEmpty()) {
-                mostarWarningCampoRequerido();
+                Alertas.mostarWarning("Campo Requerido Vacío", "Por favor, ingresa el valor de busqueda correcto.");
                 return;
             } else {
                 citas = agenda.getCitaPorNombre(txtNombre.getText());
@@ -136,7 +138,7 @@ public class MostrarCitaController implements Initializable {
             String telefonoBuscado = txtTelefono.getText().trim();
 
             if (telefonoBuscado.isEmpty()) {
-                mostarWarningCampoRequerido();
+                Alertas.mostarWarning("Campo Requerido Vacío", "Por favor, ingresa el valor de busqueda correcto.");
                 return;
             } else {
                 citas = agenda.getCitaPorTelefono(txtTelefono.getText());
@@ -146,17 +148,17 @@ public class MostrarCitaController implements Initializable {
             String emailBuscado = txtEmail.getText().trim();
 
             if (emailBuscado.isEmpty()) {
-                mostarWarningCampoRequerido();
+                Alertas.mostarWarning("Campo Requerido Vacío", "Por favor, ingresa el valor de busqueda correcto.");
                 return;
             } else {
-                citas = agenda.getCitaPorEmail(txtEmail.getText());
+                citas = agenda.getCitaPorEmail(emailBuscado);
             }
 
         } else if (ddBuscarPor.getValue().equals("Turno")) {
             String turnoBuscado = ddTurno.getValue();
 
             if (turnoBuscado.isEmpty()) {
-                mostarWarningCampoRequerido();
+                Alertas.mostarWarning("Campo Requerido Vacío", "Por favor, ingresa el valor de busqueda correcto.");
                 return;
             } else {
                 citas = agenda.getCitaPorTurno(ddTurno.getValue());
@@ -165,34 +167,25 @@ public class MostrarCitaController implements Initializable {
         actualizarTabla(citas);
     }
 
-    private void mostarWarningCampoRequerido() {
-        Alert alert = new Alert(AlertType.WARNING);
-        alert.setTitle("Advertencia de Búsqueda");
-        alert.setHeaderText("Campo Requerido Vacío");
-        alert.setContentText("Por favor, ingresa el valor de busqueda correcto.");
-        alert.showAndWait();
-    }
 
     @FXML
     void cancelarCita(ActionEvent event) {
         Cita citaACancelar = getDatosCita();
+        String title = "Cancelar cita";
+        String header = "¿Está seguro que quieres cancelar la cita?";
+        String context = citaACancelar.getInforCita() + "\n" + "Por favor, confirma. Una vez cancelada no se puede recuperar la cita.";
 
-        Alert alert = new Alert(AlertType.CONFIRMATION);
-        alert.setTitle("Cancelar cita");
-        alert.setHeaderText("¿Está seguro que quieres cancelar la cita?");
-        alert.setContentText(citaACancelar.getInforCita() + "\n" + "Por favor, confirma. Una vez cancelada no se puede recuperar la cita.");
-
-        Optional<ButtonType> resultado = alert.showAndWait();
+        Optional<ButtonType> resultado = Alertas.mostarConfirmation(title, header, context);
 
         if (resultado.isPresent() && resultado.get() == ButtonType.OK) {
             if (agenda.cancelarCita(citaACancelar.getId())) {
                 System.out.println("Se elimino la cita: " + citaACancelar.getInforCita());
                 agendaDAO.guardarCitas(agenda.getCitas());
-                mostarSuccess("Operacion exitosa", "La cita se ha cancelado exitosamente.");
+                Alertas.mostarSuccess("Operacion exitosa", "La cita se ha cancelado exitosamente.");
                 actualizarTabla(agenda.getCitas());
             } else {
                 System.out.println("Ocurrio un error al cancelar la cita: " + citaACancelar.getInforCita());
-                mostarError("Error al cancelar la cita", "Ocurrio un error al intentar cancelar la cita. Intenta de nuevo o contacta al administrador.");
+                Alertas.mostarError("Error al cancelar la cita", "Ocurrio un error al intentar cancelar la cita. Intenta de nuevo o contacta al administrador.");
             }
         }
         limpiarCampos();
@@ -293,19 +286,9 @@ public class MostrarCitaController implements Initializable {
         }
     }
 
-    private void mostarSuccess(String header, String context) {
-        Alert alert = new Alert(AlertType.INFORMATION);
-        alert.setTitle("Exito");
-        alert.setHeaderText(header);
-        alert.setContentText(context);
-        alert.showAndWait();
+    @FXML
+    void irACrearCita(ActionEvent event) {
+        App.app.setScene(Paths.CREAR_CITA);
     }
 
-    private void mostarError(String header, String context) {
-        Alert alert = new Alert(AlertType.ERROR);
-        alert.setTitle("ERROR");
-        alert.setHeaderText(header);
-        alert.setContentText(context);
-        alert.showAndWait();
-    }
 }

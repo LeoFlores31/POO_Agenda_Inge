@@ -1,29 +1,27 @@
 package application;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 import controllers.MenuCitasController;
-import controllers.MenuController;
 import controllers.ModificarCitaController;
 import controllers.MostrarCitaController;
+import controllers.CrearCitaController;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+
 import dao.AgendaDAO;
 import dao.GestorPacientesDAO;
+
 import model.Agenda;
 import model.GestorPacientes;
 import model.Paciente;
 import model.cita.*;
-import utils.Menu;
 import utils.Paths;
-import utils.SubMenus;
 
 public class App extends Application {
 
@@ -97,6 +95,10 @@ public class App extends Application {
 
             if (controller instanceof MostrarCitaController) {
                 ((MostrarCitaController) controller).setDependencies(this.agenda, this.gestorPacientes, this.agendaDAO);
+            }
+
+            if (controller instanceof CrearCitaController) {
+                ((CrearCitaController) controller).setDependencies(this.agenda, this.gestorPacientes, this.agendaDAO);
             }
 
             stageWindow.setScene(new Scene(pane));

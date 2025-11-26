@@ -29,7 +29,7 @@
       <TextField fx:id="txtEmail" layoutX="151.0" layoutY="210.0" prefHeight="25.0" prefWidth="250.0" promptText="email" visible="false" />
       <Label fx:id="lblTurno" layoutX="74.0" layoutY="210.0" prefHeight="26.0" prefWidth="58.0" text="Turno" visible="false" />
       <ChoiceBox fx:id="ddTurno" layoutX="135.0" layoutY="210.0" prefHeight="25.0" prefWidth="111.0" visible="false" />
-      <Button fx:id="btnBuscarCita" layoutX="513.0" layoutY="141.0" mnemonicParsing="false" onAction="#buscarCita" prefHeight="33.0" prefWidth="111.0" style="-fx-background-color: #2196F3;" text="Buscar" textFill="WHITE" />
+      <Button fx:id="btnBuscarCita" layoutX="513.0" layoutY="141.0" mnemonicParsing="false" onAction="#buscarCita" prefHeight="33.0" prefWidth="111.0" style="-fx-background-color: #4CAF50;" text="Buscar" textFill="WHITE" />
       <Button fx:id="btnModificarCita" layoutX="513.0" layoutY="195.0" mnemonicParsing="false" onAction="#modificarCita" prefHeight="33.0" prefWidth="111.0" style="-fx-background-color: #FF9800;" text="Modificar Cita" textFill="WHITE" visible="false" />
       <Button fx:id="btnCancelarCita" layoutX="513.0" layoutY="247.0" mnemonicParsing="false" onAction="#cancelarCita" prefHeight="33.0" prefWidth="111.0" style="-fx-background-color: #F44336;" text="Cancelar Cita" textFill="WHITE" visible="false" />
       <TableView fx:id="tblCitas" layoutX="32.0" layoutY="300.0" prefHeight="280.0" prefWidth="1044.0">
@@ -45,5 +45,6 @@
             <TableColumn fx:id="colDuracion" minWidth="0.0" prefWidth="94.0" text="Duracion (min)" />
         </columns>
       </TableView>
+      <Button fx:id="btnCrearCita" layoutX="48.0" layoutY="21.0" mnemonicParsing="false" onAction="#irACrearCita" prefHeight="53.0" prefWidth="125.0" style="-fx-background-color: #2196F3;" text="Crear Cita" textFill="WHITE" underline="true" />
    </children>
 </AnchorPane>

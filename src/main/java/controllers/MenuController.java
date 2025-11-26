@@ -5,11 +5,9 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import utils.Paths;
-
+import utils.Alertas;
 import java.util.Optional;
 
 public class MenuController {
@@ -36,12 +34,11 @@ public class MenuController {
 
     @FXML
     void salirSistema(ActionEvent event) {
-        Alert alert = new Alert(AlertType.CONFIRMATION);
-        alert.setTitle("Confirmación de Salida");
-        alert.setHeaderText("¿Estás seguro que deseas salir de la aplicación?");
-        alert.setContentText("Asegúrate de haber guardado todos los cambios recientes.");
+        String title = "Confirmación de Salida";
+        String header = "¿Estás seguro que deseas salir de la aplicación?";
+        String context = "Asegúrate de haber guardado todos los cambios recientes.";
 
-        Optional<ButtonType> resultado = alert.showAndWait();
+        Optional<ButtonType> resultado = Alertas.mostarConfirmation(title, header, context);
 
         if (resultado.isPresent() && resultado.get() == ButtonType.OK) {
             // todo: validar si es necesario llamar al metodo: agendaDAO.guardarCitas(agenda.getCitas());
