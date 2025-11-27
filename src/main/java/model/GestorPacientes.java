@@ -256,4 +256,14 @@ public class GestorPacientes {
         }
         return null;
     }
+
+    public boolean validarFormatoEmail(String email) {
+        if (email == null || email.trim().isEmpty()) {
+            return false;
+        }
+
+        String emailRegex = ".*@.*\\.com$";
+
+        return email.matches("(?i)" + emailRegex);
+    }
 }

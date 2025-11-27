@@ -5,6 +5,7 @@ import dao.GestorPacientesDAO;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
@@ -318,7 +319,7 @@ public class MostrarPacientesController implements Initializable {
 
     @FXML
     void irACrearPaciente(ActionEvent event) {
-
+        App.app.setScene(Paths.CREAR_PACIENTE);
     }
 
     @FXML

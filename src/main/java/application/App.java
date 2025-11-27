@@ -7,6 +7,7 @@ import controllers.ModificarCitaController;
 import controllers.MostrarCitaController;
 import controllers.CrearCitaController;
 import controllers.MostrarPacientesController;
+import controllers.CrearPacienteController;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -99,6 +100,10 @@ public class App extends Application {
 
             if (controller instanceof MostrarPacientesController) {
                 ((MostrarPacientesController) controller).setDependencies(this.gestorPacientes, this.gestorPacientesDAO);
+            }
+
+            if (controller instanceof CrearPacienteController) {
+                ((CrearPacienteController) controller).setDependencies(this.gestorPacientes, this.gestorPacientesDAO);
             }
 
             stageWindow.setScene(new Scene(pane));
