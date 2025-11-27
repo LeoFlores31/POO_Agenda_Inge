@@ -318,7 +318,7 @@ public class MostrarPacientesController implements Initializable {
 
     @FXML
     void irACrearPaciente(ActionEvent event) {
-
+        App.app.setScene(Paths.CREAR_PACIENTE);
     }
 
     @FXML

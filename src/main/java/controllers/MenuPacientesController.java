@@ -19,17 +19,12 @@ public class MenuPacientesController {
 
     @FXML
     void crearPaciente(ActionEvent event) {
-
+        App.app.setScene(Paths.CREAR_PACIENTE);
     }
 
     @FXML
     void mostrarPacientes(ActionEvent event) {
         App.app.setScene(Paths.MOSTRAR_PACIENTES);
-        // todo: se debe de mostar la lista actual de pacientes
-        // todo: opcion a filtrar por los diferentes campos
-        // todo: se autocompletaran los campos al seleccionar.
-        // todo: al seleccionar a un paciente se hablitara la opcion de modificar o eliminar
-
     }
 
     @FXML
