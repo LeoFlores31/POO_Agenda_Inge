@@ -5,12 +5,7 @@ import dao.GestorPacientesDAO;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import model.GestorPacientes;
 import model.Paciente;
@@ -19,6 +14,7 @@ import utils.Paths;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class MostrarPacientesController implements Initializable {
@@ -313,7 +309,25 @@ public class MostrarPacientesController implements Initializable {
 
     @FXML
     void eliminarPaciente(ActionEvent event) {
+        String title = "Cancelar cita";
+        String header = "¿Está seguro que quieres eliminar al paciente?";
+        String context = pacienteTemp + "\n" + "Por favor, confirma. Una vez eliminado no se puede recuperar.";
 
+        Optional<ButtonType> resultado = Alertas.mostarConfirmation(title, header, context);
+
+        if (resultado.isPresent() && resultado.get() == ButtonType.OK) {
+            if (gestorPacientes.eliminarPaciente(pacienteTemp)) {
+                System.out.println("Se elimino el paciente: " + pacienteTemp);
+                gestorPacientesDAO.guardarPaciente(gestorPacientes.getListaPacientes());
+                Alertas.mostarSuccess("Operacion exitosa", "Paciente eliminado correctamente.");
+                actualizarTabla(gestorPacientes.getListaPacientes());
+                limpiarCamposModificar();
+                deshabilitarCamposModificar();
+            } else {
+                System.out.println("Ocurrio un error al eliminar el paciente: " + pacienteTemp);
+                Alertas.mostarError("Error al eliminar el paciente", "Ocurrio un error al intentar eliminar el paciente. Intenta de nuevo o contacta al administrador.");
+            }
+        }
     }
 
     @FXML
@@ -323,7 +337,36 @@ public class MostrarPacientesController implements Initializable {
 
     @FXML
     void modificarPaciente(ActionEvent event) {
+        if (!validarCampos()) return;
 
+        if (gestorPacientes.validarFormatoEmail(txtEmail.getText().trim())) {
+            pacienteTemp.setNombre(txtNombre.getText().trim());
+            pacienteTemp.setEmail(txtEmail.getText().trim());
+            pacienteTemp.setTelefono(txtTelefono.getText().trim());
+            Alertas.mostarSuccess("Operacion exitosa", "El paciente se modifico correctamente.");
+            actualizarTabla(gestorPacientes.getListaPacientes());
+        } else {
+            Alertas.mostarWarning("Correo invalido", "Favor de ingresar un email valido");
+        }
+    }
+
+    private boolean validarCampos() {
+        if (txtNombre.getText().trim().isEmpty()) {
+            Alertas.mostarWarning("El campo Nombre del paciente no puede estar vacío.", "Campo Vacío");
+            return false;
+        }
+
+        if (txtTelefono.getText().trim().isEmpty()) {
+            Alertas.mostarWarning("El campo Telefono del paciente no puede estar vacío.", "Campo Vacío");
+            return false;
+        }
+
+        if (txtEmail.getText().trim().isEmpty()) {
+            Alertas.mostarWarning("El campo Email del paciente no puede estar vacío.", "Campo Vacío");
+            return false;
+        }
+
+        return true;
     }
 
     @FXML

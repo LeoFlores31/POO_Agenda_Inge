@@ -196,7 +196,12 @@ public class GestorPacientes {
         System.out.println(paciente);
     }
 
-    public void eliminarPaciente(Scanner sc) {
+
+    public boolean eliminarPaciente(Paciente paciente) {
+        return listaPacientes.remove(paciente);
+    }
+
+    public void eliminarPaciente2(Scanner sc) {
         if (listaPacientes.isEmpty()) {
             Menu.mostrarMensajeError(" ⚠️ No hay pacientes para eliminar");
             return;
