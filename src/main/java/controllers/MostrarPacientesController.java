@@ -337,7 +337,36 @@ public class MostrarPacientesController implements Initializable {
 
     @FXML
     void modificarPaciente(ActionEvent event) {
-        // todo: crear metodo
+        if (!validarCampos()) return;
+
+        if (gestorPacientes.validarFormatoEmail(txtEmail.getText().trim())) {
+            pacienteTemp.setNombre(txtNombre.getText().trim());
+            pacienteTemp.setEmail(txtEmail.getText().trim());
+            pacienteTemp.setTelefono(txtTelefono.getText().trim());
+            Alertas.mostarSuccess("Operacion exitosa", "El paciente se modifico correctamente.");
+            actualizarTabla(gestorPacientes.getListaPacientes());
+        } else {
+            Alertas.mostarWarning("Correo invalido", "Favor de ingresar un email valido");
+        }
+    }
+
+    private boolean validarCampos() {
+        if (txtNombre.getText().trim().isEmpty()) {
+            Alertas.mostarWarning("El campo Nombre del paciente no puede estar vacío.", "Campo Vacío");
+            return false;
+        }
+
+        if (txtTelefono.getText().trim().isEmpty()) {
+            Alertas.mostarWarning("El campo Telefono del paciente no puede estar vacío.", "Campo Vacío");
+            return false;
+        }
+
+        if (txtEmail.getText().trim().isEmpty()) {
+            Alertas.mostarWarning("El campo Email del paciente no puede estar vacío.", "Campo Vacío");
+            return false;
+        }
+
+        return true;
     }
 
     @FXML
