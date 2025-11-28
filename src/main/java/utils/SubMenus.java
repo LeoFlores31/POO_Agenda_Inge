@@ -39,7 +39,7 @@ public class SubMenus {
                     break;
                 case 3:
                     System.out.println("--- Eliminar paciente ---");
-                    gestorPacientes.eliminarPaciente(sc);
+                    gestorPacientes.eliminarPaciente2(sc);
                     datosModificados = true;
                     break;
                 case 4:
