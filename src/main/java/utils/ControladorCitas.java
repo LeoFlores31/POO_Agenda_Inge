@@ -205,7 +205,7 @@ public class ControladorCitas {
                     System.out.print("\nNombre: ");
                     inputUsuario = sc.nextLine();
 
-                    resultadoCitas = agenda.buscarCitaPorNombre(inputUsuario);
+                    resultadoCitas = agenda.getCitaPorNombre(inputUsuario);
 
                     if (resultadoCitas.isEmpty()) {
                         Menu.mostrarMensajeError("⚠️ No se encontraron citas para '" + inputUsuario + "'. Intenta de nuevo.");
@@ -220,7 +220,7 @@ public class ControladorCitas {
                     System.out.print("\nTelefono: ");
                     inputUsuario = sc.nextLine();
 
-                    resultadoCitas = agenda.buscarCitaPorTelefono(inputUsuario);
+                    resultadoCitas = agenda.getCitaPorTelefono(inputUsuario);
 
                     if (resultadoCitas.isEmpty()) {
                         Menu.mostrarMensajeError("⚠️ No se encontraron citas con el telefono '" + inputUsuario + "'. Intenta de nuevo.");
@@ -235,7 +235,7 @@ public class ControladorCitas {
                     System.out.print("\nEmail: ");
                     inputUsuario = sc.nextLine();
 
-                    resultadoCitas = agenda.buscarCitaPorEmail(inputUsuario);
+                    resultadoCitas = agenda.getCitaPorEmail(inputUsuario);
 
                     if (resultadoCitas.isEmpty()) {
                         Menu.mostrarMensajeError("⚠️ No se encontraron citas para '" + inputUsuario + "'. Intenta de nuevo.");
@@ -281,7 +281,7 @@ public class ControladorCitas {
         do {
             LocalTime nuevaHora = preguntarHora(sc, true);
             citaTemporal.setHora(nuevaHora);
-            if (agenda.validarDisponibilidadCita(citaTemporal)){
+            if (agenda.validarDisponibilidadCita(citaTemporal, 0)){
                 citaAModificar.setHora(nuevaHora);
                 System.out.println("\n✅ Hora modificada con exito!");
                 if (!tipoCita.equals(citaAModificar.getTipoCita())){

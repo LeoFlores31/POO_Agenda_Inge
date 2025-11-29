@@ -20,6 +20,46 @@ public class GestorPacientes {
         return listaPacientes;
     }
 
+    public ArrayList<Paciente> getPacientesPorNombre(String nombre) {
+        ArrayList<Paciente> encontrados = new ArrayList<>();
+        for (Paciente p : listaPacientes) {
+            if (p.getNombre().equalsIgnoreCase(nombre)) {
+                encontrados.add(p);
+            }
+        }
+        return encontrados;
+    }
+
+    public ArrayList<Paciente> getPacientesPorEmail(String email) {
+        ArrayList<Paciente> encontrados = new ArrayList<>();
+        for (Paciente p : listaPacientes) {
+            if (p.getEmail().equalsIgnoreCase(email)) {
+                encontrados.add(p);
+            }
+        }
+        return encontrados;
+    }
+
+    public ArrayList<Paciente> getPacientesPorTelefono(String telefono) {
+        ArrayList<Paciente> encontrados = new ArrayList<>();
+        for (Paciente p : listaPacientes) {
+            if (p.getTelefono().equalsIgnoreCase(telefono)) {
+                encontrados.add(p);
+            }
+        }
+        return encontrados;
+    }
+
+    public ArrayList<Paciente> getPacientesPorID(String ID) {
+        ArrayList<Paciente> encontrados = new ArrayList<>();
+        for (Paciente p : listaPacientes) {
+            if (p.getId().equalsIgnoreCase(ID)) {
+                encontrados.add(p);
+            }
+        }
+        return encontrados;
+    }
+
     public void setListaPacientes(ArrayList<Paciente> pacientes) {
         this.listaPacientes = pacientes;
     }
@@ -156,7 +196,12 @@ public class GestorPacientes {
         System.out.println(paciente);
     }
 
-    public void eliminarPaciente(Scanner sc) {
+
+    public boolean eliminarPaciente(Paciente paciente) {
+        return listaPacientes.remove(paciente);
+    }
+
+    public void eliminarPaciente2(Scanner sc) {
         if (listaPacientes.isEmpty()) {
             Menu.mostrarMensajeError(" ⚠️ No hay pacientes para eliminar");
             return;
@@ -215,5 +260,15 @@ public class GestorPacientes {
             }
         }
         return null;
+    }
+
+    public boolean validarFormatoEmail(String email) {
+        if (email == null || email.trim().isEmpty()) {
+            return false;
+        }
+
+        String emailRegex = ".*@.*\\.com$";
+
+        return email.matches("(?i)" + emailRegex);
     }
 }

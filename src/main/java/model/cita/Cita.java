@@ -2,6 +2,7 @@ package model.cita;
 
 import model.Paciente;
 
+import java.io.Serial;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -10,6 +11,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public abstract class Cita implements java.io.Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
+
     private static int totalCitas = 0;
     private int id;
     private Paciente paciente;
@@ -17,6 +21,8 @@ public abstract class Cita implements java.io.Serializable {
     private int idMotivo;
 
     protected HashMap<Integer, MotivoCita> motivosDisponibles = new HashMap<>();
+
+    public Cita(){};
 
     public Cita(Paciente paciente, LocalDateTime fechaHora, int idMotivo) {
         this.id = ++totalCitas;
@@ -119,7 +125,35 @@ public abstract class Cita implements java.io.Serializable {
         System.out.println("-".repeat(40));
     }
 
+    public String getInforCita() {
+        return
+            "Paciente: " + paciente.getNombre() + '\n' +
+            "Motivo: " + this.getMotivo() + '\n' +
+            "Fecha: " + this.getFecha() + '\n' +
+            "De: " + this.getHora() + " a " + this.terminaEn().toLocalTime() + '\n';
+    }
+
     public LocalDateTime terminaEn() {
         return this.fechaHora.plusMinutes(this.motivosDisponibles.get(idMotivo).getDuracion());
+    }
+
+    public String getNombrePaciente() {
+        return this.paciente.getNombre();
+    }
+
+    public String getEmailPaciente() {
+        return this.paciente.getEmail();
+    }
+
+    public String getTelefonoPaciente() {
+        return this.paciente.getTelefono();
+    }
+
+    public String getHorarioCita() {
+        return this.getHora() + " - " + this.terminaEn().toLocalTime();
+    }
+
+    public String getTurno() {
+        return "Sin turno";
     }
 }
